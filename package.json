@@ -1,8 +1,9 @@
 {
-  "name": "telegram-bot",
+  "name": "vpn-telegram-bot",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "author": "Pavel Katkov",
   "devDependencies": {
     "prettier": "^2.6.1",
     "typescript": "^4.6.3"

@@ -2,6 +2,7 @@ import * as console from 'console';
 import dotenv from 'dotenv';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'typegram';
+import ping from 'ping';
 
 dotenv.config();
 
@@ -28,7 +29,21 @@ bot.help((ctx) => {
 });
 
 bot.command('ping', (ctx) => {
-  ctx.reply('Ping!');
+  ctx.reply('Start pinging! Wait!');
+  ping.promise
+    .probe('google.com', {
+      timeout: 2,
+      extra: ['-c', '5']
+    })
+    .then((res) => {
+      ctx.reply(JSON.stringify(res, null, 2));
+    })
+    .then(() => {
+      ctx.reply('Done!');
+    })
+    .catch((err) => {
+      ctx.reply('Error: ', err);
+    });
 });
 
 bot.command('quit', (ctx) => {

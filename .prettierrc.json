@@ -1,11 +1,6 @@
 {
   "singleQuote": true,
-  "overrides": [
-    {
-      "files": ["**/*.css", "**/*.scss", "**/*.html"],
-      "options": {
-        "singleQuote": false
-      }
-    }
-  ]
+  "printWidth": 100,
+  "htmlWhitespaceSensitivity": "css",
+  "trailingComma": "none"
 }

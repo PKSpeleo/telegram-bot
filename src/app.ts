@@ -20,10 +20,29 @@ bot.start((ctx) => {
   ctx.reply('Hello ' + ctx.from.first_name + '!');
 });
 
+bot.help((ctx) => {
+  ctx.reply('Send /start to receive a greeting');
+  ctx.reply('Send /ping to help');
+  ctx.reply('Send /ping to ping');
+  ctx.reply('Send /quit to stop the bot');
+});
+
+bot.command('ping', (ctx) => {
+  ctx.reply('Ping!');
+});
+
+bot.command('quit', (ctx) => {
+  // Explicit usage
+  // ctx.telegram.leaveChat(ctx.message.chat.id);
+  // Context shortcut
+  ctx.reply('Goodbye ' + ctx.from.first_name + '!');
+  ctx.leaveChat();
+});
+
 bot
   .launch()
   .then(() => {
-      console.log('Bot started successfully!')
+    console.log('Bot started successfully!');
   })
   .catch((err) => {
     console.error('Wow! Bot crashed during start!: ', err);

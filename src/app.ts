@@ -53,11 +53,11 @@ bot.command('ping', (ctx) => {
   const isAdmin = adminId && ctx.from.id.toString() === adminId;
   const isSupportedChat = supportedChatId && ctx.chat.id.toString() === supportedChatId;
   if (isAdmin || isSupportedChat) {
-    ctx.reply('Start pinging NL server from RUS!\nTrying 5 times.\nWait 5 seconds, pls...');
+    ctx.reply('Start pinging NL server from RUS!\nTrying 10 times.\nWait 10 seconds, pls...');
     ping.promise
       .probe(server, {
         timeout: 1,
-        extra: ['-c', '5']
+        extra: ['-c', '10']
       })
       .then((res) => {
         if (res.alive) {
@@ -67,7 +67,7 @@ Lost packages: ${Math.round(Number(res.packetLoss))}% out of 5`);
         } else {
           ctx.reply(`The server NOT works!
 Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.
-Lost packages: ${Math.round(Number(res.packetLoss))}% out of 5'`);
+Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10'`);
         }
       })
       .finally(() => {

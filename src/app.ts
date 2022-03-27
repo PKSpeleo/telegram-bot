@@ -6,11 +6,15 @@ import ping from 'ping';
 
 dotenv.config();
 
-console.log(process.env.BOT_TOKEN);
-console.log(process.env.BOT_URL);
-
 const token = process.env.BOT_TOKEN;
 const server = process.env.BOT_NL_SERVER;
+const debug = process.env.BOT_DEBUG;
+
+console.log('BOT Token', token);
+console.log('Server for ping: ', server);
+if (debug) {
+  console.log('Debug mode enabled! Start command will be logged to the console.');
+}
 
 if (token === undefined) {
   throw new Error('Telegram Bot token is missing!');
@@ -24,6 +28,15 @@ const bot: Telegraf<Context<Update>> = new Telegraf(token);
 
 bot.start((ctx) => {
   ctx.reply('Hello ' + ctx.from.first_name + '!');
+  if (debug) {
+    const date = new Date(ctx.message.date * 1000);
+    console.log('===> Debug data: begin <===');
+    console.log('Date and time: ', date.toLocaleString());
+    console.log(`User '${ctx.from.first_name} ${ctx.from.last_name}' with ID '${ctx.from.id}'
+wrote to the chat ID '${ctx.chat.id}'
+massage: ${ctx.message.text}`);
+    console.log('===> Debug data: end <===');
+  }
 });
 
 bot.help((ctx) => {

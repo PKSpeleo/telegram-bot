@@ -3,7 +3,6 @@ import dotenv from 'dotenv';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'typegram';
 import ping from 'ping';
-import { log } from 'util';
 
 dotenv.config();
 

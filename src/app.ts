@@ -29,7 +29,8 @@ if (server === undefined) {
 const bot: Telegraf<Context<Update>> = new Telegraf(token);
 
 bot.start((ctx) => {
-  ctx.reply(`Hello ${ctx.from.first_name} ${ctx.from.last_name}!`);
+  ctx.reply(`Hello, ${ctx.from.first_name} ${ctx.from.last_name} (@${ctx.from.username})!
+Your ID is: '${ctx.from.id}'`);
   if (debug) {
     const date = new Date(ctx.message.date * 1000);
     console.log('===> Debug data: begin <===');

@@ -43,7 +43,7 @@ bot.command('ping', (ctx) => {
     .then((res) => {
       ctx.reply(JSON.stringify(res, null, 2));
     })
-    .then(() => {
+    .finally(() => {
       ctx.reply('Done!');
     })
     .catch((err) => {

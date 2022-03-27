@@ -63,7 +63,7 @@ bot.command('ping', (ctx) => {
         if (res.alive) {
           ctx.reply(`The server works fine!
 Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.
-Lost packages: ${Math.round(Number(res.packetLoss))}% out of 5`);
+Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10`);
         } else {
           ctx.reply(`The server NOT works!
 Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.

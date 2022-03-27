@@ -9,6 +9,8 @@ dotenv.config();
 const token = process.env.BOT_TOKEN;
 const server = process.env.BOT_NL_SERVER;
 const debug = process.env.BOT_DEBUG;
+const adminId = process.env.BOT_ADMIN_ID;
+const supportedChatId = process.env.BOT_SUPPORTED_CHAT_ID;
 
 console.log('BOT Token', token);
 console.log('Server for ping: ', server);
@@ -41,35 +43,42 @@ massage: ${ctx.message.text}`);
 
 bot.help((ctx) => {
   ctx.reply('Send /start to receive a greeting');
-  ctx.reply('Send /ping to help');
+  ctx.reply('Send /help to help');
   ctx.reply('Send /ping to ping');
-  ctx.reply('Send /quit to stop the bot');
+  ctx.reply('Send /quit to ask Bot to leave the chat');
 });
 
 bot.command('ping', (ctx) => {
-  ctx.reply('Start pinging! Wait!');
-  ping.promise
-    .probe(server, {
-      timeout: 1,
-      extra: ['-c', '5']
-    })
-    .then((res) => {
-      ctx.reply(JSON.stringify(res, null, 2));
-    })
-    .finally(() => {
-      ctx.reply('Done!');
-    })
-    .catch((err) => {
-      ctx.reply('Error: ', err);
-    });
+  const isAdmin = adminId && ctx.from.id.toString() === adminId;
+  const isSupportedChat = supportedChatId && ctx.chat.id.toString() === supportedChatId;
+  if (isAdmin || isSupportedChat) {
+    ctx.reply('Start pinging! Wait!');
+    ping.promise
+      .probe(server, {
+        timeout: 1,
+        extra: ['-c', '5']
+      })
+      .then((res) => {
+        ctx.reply(JSON.stringify(res, null, 2));
+      })
+      .finally(() => {
+        ctx.reply('Done!');
+      })
+      .catch((err) => {
+        ctx.reply('Error: ', err);
+      });
+  }
 });
 
 bot.command('quit', (ctx) => {
   // Explicit usage
   // ctx.telegram.leaveChat(ctx.message.chat.id);
   // Context shortcut
-  ctx.reply('Goodbye ' + ctx.from.first_name + '!');
-  ctx.leaveChat();
+  const isAdmin = adminId && ctx.from.id.toString() === adminId;
+  if (isAdmin) {
+    ctx.reply('Goodbye ' + ctx.from.first_name + '!');
+    ctx.leaveChat();
+  }
 });
 
 bot
@@ -78,7 +87,7 @@ bot
     console.log('Bot started successfully!');
   })
   .catch((err) => {
-    console.error('Wow! Bot crashed during start!: ', err);
+    console.error('Wow! Bot crashed during start: ', err);
   });
 
 // Enable graceful stop

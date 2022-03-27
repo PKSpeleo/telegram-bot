@@ -7,7 +7,7 @@ import ping from 'ping';
 dotenv.config();
 
 const token = process.env.BOT_TOKEN;
-const server = process.env.BOT_NL_SERVER;
+const server = process.env.BOT_SERVER_FOR_PING;
 const debug = process.env.BOT_DEBUG;
 const adminId = process.env.BOT_ADMIN_ID;
 const supportedChatId = process.env.BOT_SUPPORTED_CHAT_ID;
@@ -29,7 +29,7 @@ if (server === undefined) {
 const bot: Telegraf<Context<Update>> = new Telegraf(token);
 
 bot.start((ctx) => {
-  ctx.reply('Hello ' + ctx.from.first_name + '!');
+  ctx.reply(`Hello ${ctx.from.first_name} ${ctx.from.last_name}!`);
   if (debug) {
     const date = new Date(ctx.message.date * 1000);
     console.log('===> Debug data: begin <===');
@@ -52,17 +52,25 @@ bot.command('ping', (ctx) => {
   const isAdmin = adminId && ctx.from.id.toString() === adminId;
   const isSupportedChat = supportedChatId && ctx.chat.id.toString() === supportedChatId;
   if (isAdmin || isSupportedChat) {
-    ctx.reply('Start pinging! Wait!');
+    ctx.reply('Start pinging NL server from RUS!\nTrying 5 times.\nWait 5 seconds, pls...');
     ping.promise
       .probe(server, {
         timeout: 1,
         extra: ['-c', '5']
       })
       .then((res) => {
-        ctx.reply(JSON.stringify(res, null, 2));
+        if (res.alive) {
+          ctx.reply(`The server works fine!
+Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.
+Lost packages: ${Math.round(Number(res.packetLoss))}% out of 5`);
+        } else {
+          ctx.reply(`The server NOT works!
+Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.
+Lost packages: ${Math.round(Number(res.packetLoss))}% out of 5'`);
+        }
       })
       .finally(() => {
-        ctx.reply('Done!');
+        ctx.reply('I am Done!');
       })
       .catch((err) => {
         ctx.reply('Error: ', err);

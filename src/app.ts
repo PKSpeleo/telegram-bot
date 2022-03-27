@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'typegram';
 import ping from 'ping';
+import { log } from 'util';
 
 dotenv.config();
 
@@ -14,6 +15,8 @@ const supportedChatId = process.env.BOT_SUPPORTED_CHAT_ID;
 
 console.log('BOT Token', token);
 console.log('Server for ping: ', server);
+console.log('Admins ID: ', adminId);
+console.log('Supported chat ID: ', supportedChatId);
 if (debug) {
   console.log('Debug mode enabled! Start command will be logged to the console.');
 }

@@ -10,9 +10,14 @@ console.log(process.env.BOT_TOKEN);
 console.log(process.env.BOT_URL);
 
 const token = process.env.BOT_TOKEN;
+const server = process.env.BOT_NL_SERVER;
 
 if (token === undefined) {
   throw new Error('Telegram Bot token is missing!');
+}
+
+if (server === undefined) {
+  throw new Error('Server for ping is missing!!');
 }
 
 const bot: Telegraf<Context<Update>> = new Telegraf(token);
@@ -31,8 +36,8 @@ bot.help((ctx) => {
 bot.command('ping', (ctx) => {
   ctx.reply('Start pinging! Wait!');
   ping.promise
-    .probe('google.com', {
-      timeout: 2,
+    .probe(server, {
+      timeout: 1,
       extra: ['-c', '5']
     })
     .then((res) => {

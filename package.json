@@ -5,9 +5,14 @@
   "author": "Pavel Katkov",
   "main": "dist/app.ts",
   "scripts": {
-    "build": "tsc",
-    "start": "tsc && node dist/app.js",
-    "develop": "nodemon src/app.ts"
+    "env:dev": "cp .env.dev .env",
+    "env:prod": "cp .env.prod .env",
+    "build:dev": "yarn env:dev && tsc",
+    "build:prod": "yarn env:prod && tsc",
+    "start:dev": "yarn build:dev && node dist/app.js",
+    "start:prod": "yarn build:prod && node dist/app.js",
+    "develop:dev": "yarn env:dev && nodemon src/app.ts",
+    "develop:prod": "yarn env:prod && nodemon src/app.ts"
   },
   "devDependencies": {
     "@types/node": "^17.0.23",

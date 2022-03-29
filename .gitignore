@@ -1,4 +1,6 @@
 .env
+.env.prod
+.env.dev
 .idea
 node_modules
 dist/

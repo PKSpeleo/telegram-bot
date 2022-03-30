@@ -1,6 +1,6 @@
 {
   "name": "vpn-telegram-bot",
-  "version": "0.1.1-alpha.2",
+  "version": "0.1.1-alpha.3",
   "license": "MIT",
   "author": "Pavel Katkov",
   "main": "dist/app.ts",
@@ -9,8 +9,8 @@
     "env:prod": "cp .env.prod .env",
     "build:dev": "yarn env:dev && tsc",
     "build:prod": "yarn env:prod && tsc",
-    "start:dev": "yarn build:dev && node dist/app.js",
-    "start:prod": "yarn build:prod && node dist/app.js",
+    "start:dev": "yarn build:dev && node dist/src/app.js",
+    "start:prod": "yarn build:prod && node dist/src/app.js",
     "develop:dev": "yarn env:dev && nodemon src/app.ts",
     "develop:prod": "yarn env:prod && nodemon src/app.ts",
     "prepare": "husky install",

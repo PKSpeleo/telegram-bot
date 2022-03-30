@@ -18,6 +18,7 @@ console.log('BOT Token', token);
 console.log('Server for ping: ', server);
 console.log('Admins ID: ', adminId);
 console.log('Supported chat ID: ', supportedChatId);
+console.log('Version: ', botVersion);
 if (debug) {
   console.log('Debug mode enabled! Start command will be logged to the console.');
 }

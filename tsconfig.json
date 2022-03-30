@@ -9,7 +9,8 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "lib": ["es2021"],
-    "rootDir": "src",
-    "outDir": "dist"
+    "rootDir": ".",
+    "outDir": "dist",
+    "resolveJsonModule": true
   }
 }

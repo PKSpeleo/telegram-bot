@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import { Context, Telegraf } from 'telegraf';
 import { Update } from 'typegram';
 import ping from 'ping';
+import packageJSON from '../package.json'
 
 dotenv.config();
 
@@ -11,6 +12,7 @@ const server = process.env.BOT_SERVER_FOR_PING;
 const debug = process.env.BOT_DEBUG;
 const adminId = process.env.BOT_ADMIN_ID;
 const supportedChatId = process.env.BOT_SUPPORTED_CHAT_ID;
+const botVersion = packageJSON.version;
 
 console.log('BOT Token', token);
 console.log('Server for ping: ', server);
@@ -31,16 +33,15 @@ if (server === undefined) {
 const bot: Telegraf<Context<Update>> = new Telegraf(token);
 
 bot.start((ctx) => {
-  ctx.reply(`Hello, ${ctx.from.first_name} ${ctx.from.last_name} (@${ctx.from.username})!
-Your ID is: '${ctx.from.id}'`);
+  ctx.reply(`Hello, ${ctx.from.first_name} ${ctx.from.last_name} (@${ctx.from.username})!`);
   if (debug) {
     const date = new Date(ctx.message.date * 1000);
-    console.log('===> Debug data: begin <===');
+    console.log('===> Start - Debug data: begin <===');
     console.log('Date and time: ', date.toLocaleString());
     console.log(`User '${ctx.from.first_name} ${ctx.from.last_name}' with ID '${ctx.from.id}'
 wrote to the chat ID '${ctx.chat.id}'
 massage: ${ctx.message.text}`);
-    console.log('===> Debug data: end <===');
+    console.log('===> Start - Debug data: end <===');
   }
 });
 
@@ -48,6 +49,7 @@ bot.help((ctx) => {
   ctx.reply('Send /start to receive a greeting');
   ctx.reply('Send /help to help');
   ctx.reply('Send /ping to ping');
+  ctx.reply('Send /info to get some info');
   ctx.reply('Send /quit to ask Bot to leave the chat');
 });
 
@@ -78,6 +80,27 @@ Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10'`);
       .catch((err) => {
         ctx.reply('Error: ', err);
       });
+  }
+});
+
+bot.command('info', (ctx) => {
+  const isAdmin = adminId && ctx.from.id.toString() === adminId;
+  const isSupportedChat = supportedChatId && ctx.chat.id.toString() === supportedChatId;
+  if (isAdmin || isSupportedChat) {
+    ctx.reply(`You are '${ctx.from.first_name}' '${ctx.from.last_name}' ('@${ctx.from.username}')!
+Your ID is: '${ctx.from.id}'
+This chat ID is: '${ctx.chat.id}'
+My version is: '${botVersion}'`);
+
+    if (debug) {
+      const date = new Date(ctx.message.date * 1000);
+      console.log('===> Info - Debug data: begin <===');
+      console.log('Date and time: ', date.toLocaleString());
+      console.log(`User '${ctx.from.first_name} ${ctx.from.last_name}' with ID '${ctx.from.id}'
+wrote to the chat ID '${ctx.chat.id}'
+massage: ${ctx.message.text}`);
+      console.log('===> Info - Debug data: end <===');
+    }
   }
 });
 

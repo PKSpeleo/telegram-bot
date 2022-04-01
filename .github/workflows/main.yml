@@ -19,7 +19,7 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
          key: ${{ secrets.SSH_KEY }}
-         known_hosts: ${{ secrets.VPS_IP }}
+         known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
       - name: SCP over SSH
         run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'
 

@@ -6,8 +6,11 @@ jobs:
   Build-and-Deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
       - uses: actions/checkout@v3
+      #      - name: Use Node.js
+      #        uses: actions/setup-node@v3
+      #        with:
+      #          node-version: '16.x'
       - name: Install dependencies
         run: yarn --frozen-lockfile
       - run: yarn build
@@ -15,9 +18,9 @@ jobs:
       - name: Install SSH key
         uses: shimataro/ssh-key-action@v2
         with:
-         key: ${{ secrets.SSH_KEY }}
-         known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-      - name: Deploy
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: SCP over SSH
         run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'
 
 

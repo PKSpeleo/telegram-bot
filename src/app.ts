@@ -91,7 +91,7 @@ bot.command('info', (ctx) => {
     ctx.reply(`You are '${ctx.from.first_name}' '${ctx.from.last_name}' ('@${ctx.from.username}')!
 Your ID is: '${ctx.from.id}'
 This chat ID is: '${ctx.chat.id}'
-My version is: '${botVersion}'`);
+I am Bot version: '${botVersion}'`);
 
     if (debug) {
       const date = new Date(ctx.message.date * 1000);

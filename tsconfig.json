@@ -10,7 +10,7 @@
     "sourceMap": true,
     "lib": ["es2021"],
     "rootDir": ".",
-    "outDir": "dist",
+    "outDir": "dist/js",
     "resolveJsonModule": true
   }
 }

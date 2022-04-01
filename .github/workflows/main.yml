@@ -19,7 +19,6 @@ jobs:
         uses: shimataro/ssh-key-action@v2
         with:
          key: ${{ secrets.SSH_KEY }}
-         name: ${{ secrets.VPS_USER }}
          known_hosts: ${{ secrets.VPS_IP }}
       - name: rsync over ssh
         run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'

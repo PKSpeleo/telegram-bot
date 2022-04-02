@@ -1,6 +1,6 @@
 {
   "name": "vpn-telegram-bot",
-  "version": "0.1.1-alpha.26",
+  "version": "0.1.1-alpha.27",
   "license": "MIT",
   "author": "Pavel Katkov",
   "main": "dist/app.ts",
@@ -13,7 +13,7 @@
     "start:dev": "yarn build && yarn env:dev && node ./dist/node/telegram_bot.js",
     "develop:dev": "yarn env:dev && nodemon src/app.ts",
     "develop:prod": "yarn env:prod && nodemon src/app.ts",
-    "gh-secrets-update": "gh secret set --env-file .env.prod && echo \"✅ Github action secrets updated\"",
+    "gh-secrets-update": "gh secret set --env-file .env.prod",
     "prepare": "husky install",
     "release": "standard-version",
     "release:alpha": "standard-version --prerelease alpha",

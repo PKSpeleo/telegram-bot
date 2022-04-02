@@ -13,7 +13,7 @@ jobs:
       - name: Build
         run: yarn build
       - name: Check bundle
-        run: ls ${{ github.workspace }}/dist/node
+        run: ls ${{ github.workspace }}/dist/node --all
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:

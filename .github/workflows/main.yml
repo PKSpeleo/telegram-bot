@@ -24,7 +24,6 @@ jobs:
           envkey_BOT_SUPPORTED_CHAT_ID: ${{ secrets.BOT_SUPPORTED_CHAT_ID }}
           envkey_BOT_DEBUG: ${{ secrets.BOT_DEBUG }}
           envkey_BOT_TEST: ${{ secrets.BOT_TEST }}
-          directory: ${{ github.workspace }}
           file_name: .env
           fail_on_empty: false
       - name: Check .env file

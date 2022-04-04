@@ -9,4 +9,10 @@ console.log('Admins ID: ', botProperties.ADMIN_ID);
 console.log('Supported chat ID: ', botProperties.SUPPORTED_CHAT_ID);
 console.log('Version: ', botProperties.VERSION);
 
-startBot(botProperties);
+startBot(botProperties)
+  .then(() => {
+    console.log('Bot started successfully!');
+  })
+  .catch((err) => {
+    console.error('Wow! Bot crashed during start: ', err);
+  });

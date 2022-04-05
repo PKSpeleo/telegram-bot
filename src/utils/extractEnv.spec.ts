@@ -1,24 +1,38 @@
 import { extractEnv } from './extractEnv';
 
-function setTestEnv() {
-  process.env.BOT_ADMIN_ID = '1111111';
-  process.env.BOT_DEBUG = 'true';
-  process.env.BOT_SERVER_FOR_PING = '111.11.11.11';
-  process.env.BOT_TOKEN = 'aaaaaaaaaaaaaaaaaa';
-  process.env.BOT_URL = 't.me/NPV_PK_DEV_BOT';
-  process.env.BOT_SUPPORTED_CHAT_ID = '-99999999';
+function setTestEnv(currentName: string) {
+  process.env.BOT_CURRENT_NAME = currentName;
+  process.env.BOT_SETTINGS_NL =
+    '{"NAME":"NL","TOKEN":"121212121212","ADMIN_ID":"1111","SUPPORTED_CHAT_ID":"-1111","SERVER_FOR_PING":"111.111.111.111","DEBUG":"true","URL":"www"}';
+  process.env.BOT_SETTINGS_DE =
+    '{"NAME":"DE","TOKEN":"3434343434343434","ADMIN_ID":"22222","SUPPORTED_CHAT_ID":"-222222","SERVER_FOR_PING":"222.222.222.222","DEBUG":"true","URL":"www"}';
 }
 
 describe('extractEnv', () => {
-  test('should should extract env', () => {
-    setTestEnv();
+  test('should should extract NL env', () => {
+    setTestEnv('NL');
     expect(extractEnv()).toEqual(
       expect.objectContaining({
-        ADMIN_ID: 1111111,
+        ADMIN_ID: 1111,
         DEBUG: true,
-        SERVER_FOR_PING: '111.11.11.11',
-        SUPPORTED_CHAT_ID: -99999999,
-        TOKEN: 'aaaaaaaaaaaaaaaaaa'
+        SERVER_FOR_PING: '111.111.111.111',
+        SUPPORTED_CHAT_ID: -1111,
+        TOKEN: '121212121212',
+        NAME: 'NL'
+      })
+    );
+  });
+
+  test('should should extract RUS env', () => {
+    setTestEnv('DE');
+    expect(extractEnv()).toEqual(
+      expect.objectContaining({
+        ADMIN_ID: 22222,
+        DEBUG: true,
+        SERVER_FOR_PING: '222.222.222.222',
+        SUPPORTED_CHAT_ID: -222222,
+        TOKEN: '3434343434343434',
+        NAME: 'DE'
       })
     );
   });

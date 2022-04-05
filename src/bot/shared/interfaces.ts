@@ -8,6 +8,8 @@ export interface BotProperties {
   SUPPORTED_CHAT_ID?: number;
   DEBUG?: boolean;
   VERSION?: string;
+  URL?: string;
+  NAME?: string;
 }
 
 export interface BotContext

@@ -3,6 +3,7 @@ import { extractEnv } from './utils/extractEnv';
 
 const botProperties = extractEnv();
 
+console.log('BOT Name', botProperties.NAME);
 console.log('BOT Token', botProperties.TOKEN);
 console.log('Server for ping: ', botProperties.SERVER_FOR_PING);
 console.log('Admins ID: ', botProperties.ADMIN_ID);

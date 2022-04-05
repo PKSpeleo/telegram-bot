@@ -17,12 +17,9 @@ jobs:
       - name: Make envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          envkey_BOT_URL: ${{ secrets.BOT_URL }}
-          envkey_BOT_SERVER_FOR_PING: ${{ secrets.BOT_SERVER_FOR_PING }}
-          envkey_BOT_ADMIN_ID: ${{ secrets.BOT_ADMIN_ID }}
-          envkey_BOT_SUPPORTED_CHAT_ID: ${{ secrets.BOT_SUPPORTED_CHAT_ID }}
-          envkey_BOT_DEBUG: ${{ secrets.BOT_DEBUG }}
+          envkey_BOT_CURRENT_NAME: ${{ secrets.BOT_CURRENT_NAME }}
+          envkey_BOT_SETTINGS_DEV: ${{ secrets.BOT_SETTINGS_DEV }}
+          envkey_BOT_SETTINGS_RUS: ${{ secrets.BOT_SETTINGS_RUS }}
           file_name: .env
           fail_on_empty: false
       - name: Check .env file

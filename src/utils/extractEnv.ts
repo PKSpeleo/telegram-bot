@@ -5,19 +5,26 @@ import packageJSONFile from '../../package.json';
 dotenv.config();
 
 export function extractEnv(): BotProperties {
-  if (process.env.BOT_TOKEN === undefined) {
+  const currentBotName = process.env.BOT_CURRENT_NAME;
+
+  const botSettingsName = `BOT_SETTINGS_${currentBotName}`;
+  const currentBotSettingsFromEnv = process.env[botSettingsName] || '';
+  const currentBotSettingsObj = JSON.parse(currentBotSettingsFromEnv);
+
+  if (currentBotSettingsObj.TOKEN === undefined) {
     throw new Error('Telegram Bot token is missing!');
   }
 
-  const isDebug = (process.env.BOT_DEBUG || '').toLowerCase() === 'true';
+  const isDebug = (currentBotSettingsObj.DEBUG || '').toLowerCase() === 'true';
 
   const botProperties: BotProperties = {
-    TOKEN: process.env.BOT_TOKEN,
-    SERVER_FOR_PING: process.env.BOT_SERVER_FOR_PING || 'google.com',
-    ADMIN_ID: Number(process.env.BOT_ADMIN_ID),
-    SUPPORTED_CHAT_ID: Number(process.env.BOT_SUPPORTED_CHAT_ID),
+    TOKEN: currentBotSettingsObj.TOKEN,
+    SERVER_FOR_PING: currentBotSettingsObj.SERVER_FOR_PING || 'google.com',
+    ADMIN_ID: Number(currentBotSettingsObj.ADMIN_ID),
+    SUPPORTED_CHAT_ID: Number(currentBotSettingsObj.SUPPORTED_CHAT_ID),
     DEBUG: isDebug,
-    VERSION: packageJSONFile.version || 'Missing!'
+    VERSION: packageJSONFile.version || 'Missing!',
+    NAME: currentBotSettingsObj.NAME || ''
   };
 
   if (botProperties.DEBUG) {

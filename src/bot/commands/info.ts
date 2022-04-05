@@ -8,7 +8,7 @@ export function reactOnInfoCommand(ctx: BotContext, botProperties: BotProperties
     ctx.reply(`You are '${ctx.from.first_name}' '${ctx.from.last_name}' ('@${ctx.from.username}')!
 Your ID is: '${ctx.from.id}'
 This chat ID is: '${ctx.chat.id}'
-I am Bot version: '${botProperties.VERSION}'`);
+I am '${botProperties.NAME}' Bot version: '${botProperties.VERSION}'`);
 
     if (botProperties.DEBUG) {
       const date = new Date(ctx.message.date * 1000);

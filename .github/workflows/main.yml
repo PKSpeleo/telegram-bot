@@ -46,8 +46,8 @@ jobs:
       - name: Check .env file
         run: ls ${{ github.workspace }} --all
       - name: Deploy NL env
-        run: scp ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
+        run: scp -P {{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
       - name: Deploy NL app
-        run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
+        run: scp -P {{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
 
 

@@ -6,6 +6,9 @@ dotenv.config();
 
 export function extractEnv(): BotProperties {
   const currentBotName = process.env.BOT_CURRENT_NAME;
+  if (currentBotName === undefined) {
+    throw new Error('Telegram Bot name is missing!');
+  }
 
   const botSettingsName = `BOT_SETTINGS_${currentBotName}`;
   const currentBotSettingsFromEnv = process.env[botSettingsName] || '';

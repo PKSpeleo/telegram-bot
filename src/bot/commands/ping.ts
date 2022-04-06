@@ -7,7 +7,7 @@ export function reactOnPingCommand(ctx: BotContext, botProperties: BotProperties
   if (isAdmin || isSupportedChat) {
     ctx.reply('Start pinging NL server from RUS!\nTrying 10 times.\nWait 10 seconds, pls...');
     ping.promise
-      .probe(botProperties.SERVER_FOR_PING[0], {
+      .probe(botProperties.SERVER_FOR_PING, {
         timeout: 1,
         extra: ['-c', '10']
       })

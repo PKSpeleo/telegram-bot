@@ -29,8 +29,25 @@ jobs:
       - name: Check .env file
         run: ls ${{ github.workspace }} --all
       - name: Deploy RUS env
-        run: scp ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'
+        run: scp ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_RUS_IP }}:/root/telegram-bot'
       - name: Deploy RUS app
-        run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'
+        run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_RUS_IP }}:/root/telegram-bot'
+      - name: Remove .env file
+        run: rm ${{ github.workspace }}/.env
+      - name: Check .env file
+        run: ls ${{ github.workspace }} --all
+      - name: Create NL envfile
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_BOT_CURRENT_NAME: "NL"
+          envkey_BOT_SETTINGS_NL: ${{ secrets.BOT_SETTINGS_NL }}
+          file_name: .env
+          fail_on_empty: false
+      - name: Check .env file
+        run: ls ${{ github.workspace }} --all
+      - name: Deploy NL env
+        run: scp ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
+      - name: Deploy NL app
+        run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
 
 

@@ -14,24 +14,23 @@ jobs:
         run: yarn build
       - name: Check bundle
         run: ls ${{ github.workspace }}/dist/node --all
-      - name: Make envfile
+      - name: Install SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+         key: ${{ secrets.SSH_KEY }}
+         known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
+      - name: Create RUS envfile
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_BOT_CURRENT_NAME: ${{ secrets.BOT_CURRENT_NAME }}
-          envkey_BOT_SETTINGS_DEV: ${{ secrets.BOT_SETTINGS_DEV }}
+          envkey_BOT_CURRENT_NAME: "RUS"
           envkey_BOT_SETTINGS_RUS: ${{ secrets.BOT_SETTINGS_RUS }}
           file_name: .env
           fail_on_empty: false
       - name: Check .env file
         run: ls ${{ github.workspace }} --all
-      - name: Install SSH key
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: ${{ secrets.SSH_KNOWN_HOSTS }}
-      - name: Deploy env
+      - name: Deploy RUS env
         run: scp ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'
-      - name: Deploy app
+      - name: Deploy RUS app
         run: scp ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/root/telegram-bot'
 
 

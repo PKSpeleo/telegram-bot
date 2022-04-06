@@ -1,14 +1,13 @@
 import { BotContext, BotProperties } from '../shared/interfaces';
 import ping from 'ping';
+import { extractRights } from '../shared/rights';
 
 export function reactOnPingCommand(ctx: BotContext, botProperties: BotProperties) {
-  const isAdmin = botProperties.ADMIN_ID && ctx.from.id === botProperties.ADMIN_ID;
-  const isSupportedChat =
-    botProperties.SUPPORTED_CHAT_ID && ctx.chat.id === botProperties.SUPPORTED_CHAT_ID;
+  const { isAdmin, isSupportedChat } = extractRights(ctx, botProperties);
   if (isAdmin || isSupportedChat) {
     ctx.reply('Start pinging NL server from RUS!\nTrying 10 times.\nWait 10 seconds, pls...');
     ping.promise
-      .probe(botProperties.SERVER_FOR_PING, {
+      .probe(botProperties.SERVER_FOR_PING[0], {
         timeout: 1,
         extra: ['-c', '10']
       })

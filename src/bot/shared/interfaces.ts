@@ -4,8 +4,8 @@ import { Message, Update } from 'typegram';
 export interface BotProperties {
   TOKEN: string;
   SERVER_FOR_PING: string;
-  ADMIN_ID?: number;
-  SUPPORTED_CHAT_ID?: number;
+  ADMIN_ID: number[];
+  SUPPORTED_CHAT_ID: number[];
   DEBUG?: boolean;
   VERSION?: string;
   URL?: string;

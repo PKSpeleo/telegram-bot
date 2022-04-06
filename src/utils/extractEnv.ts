@@ -22,9 +22,10 @@ export function extractEnv(): BotProperties {
 
   const botProperties: BotProperties = {
     TOKEN: currentBotSettingsObj.TOKEN,
-    SERVER_FOR_PING: currentBotSettingsObj.SERVER_FOR_PING || 'google.com',
-    ADMIN_ID: Number(currentBotSettingsObj.ADMIN_ID),
-    SUPPORTED_CHAT_ID: Number(currentBotSettingsObj.SUPPORTED_CHAT_ID),
+    SERVER_FOR_PING: currentBotSettingsObj.SERVER_FOR_PING || ['google.com'],
+    ADMIN_ID: convertStringsArrayToNumbersArray(currentBotSettingsObj.ADMIN_ID) || [],
+    SUPPORTED_CHAT_ID:
+      convertStringsArrayToNumbersArray(currentBotSettingsObj.SUPPORTED_CHAT_ID) || [],
     DEBUG: isDebug,
     VERSION: packageJSONFile.version || 'Missing!',
     NAME: currentBotSettingsObj.NAME || ''
@@ -35,4 +36,8 @@ export function extractEnv(): BotProperties {
   }
 
   return botProperties;
+}
+
+function convertStringsArrayToNumbersArray(array: string[]): number[] {
+  return array.map((val) => Number(val));
 }

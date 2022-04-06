@@ -1,13 +1,12 @@
 import { BotContext, BotProperties } from '../shared/interfaces';
+import { extractRights } from '../shared/rights';
 
 export function reactOnInfoCommand(ctx: BotContext, botProperties: BotProperties) {
-  const isAdmin = botProperties.ADMIN_ID && ctx.from.id === botProperties.ADMIN_ID;
-  const isSupportedChat =
-    botProperties.SUPPORTED_CHAT_ID && ctx.chat.id === botProperties.SUPPORTED_CHAT_ID;
+  const { isAdmin, isSupportedChat } = extractRights(ctx, botProperties);
   if (isAdmin || isSupportedChat) {
     ctx.reply(`You are '${ctx.from.first_name}' '${ctx.from.last_name}' ('@${ctx.from.username}')!
-Your ID is: '${ctx.from.id}'
-This chat ID is: '${ctx.chat.id}'
+Your ID is: '${ctx.from.id}' ${isAdmin ? '+' : '-'}
+This chat ID is: '${ctx.chat.id}' ${isSupportedChat ? '+' : '-'}
 I am '${botProperties.NAME}' Bot version: '${botProperties.VERSION}'`);
 
     if (botProperties.DEBUG) {

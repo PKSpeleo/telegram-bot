@@ -22,7 +22,9 @@ export function extractEnv(): BotProperties {
 
   const botProperties: BotProperties = {
     TOKEN: currentBotSettingsObj.TOKEN,
-    SERVER_FOR_PING: currentBotSettingsObj.SERVER_FOR_PING || ['google.com'],
+    SERVER_FOR_PING: currentBotSettingsObj.SERVER_FOR_PING || [
+      { NAME: 'Google.com', ADDRESS: 'google.com' }
+    ],
     ADMIN_ID: convertStringsArrayToNumbersArray(currentBotSettingsObj.ADMIN_ID) || [],
     SUPPORTED_CHAT_ID:
       convertStringsArrayToNumbersArray(currentBotSettingsObj.SUPPORTED_CHAT_ID) || [],

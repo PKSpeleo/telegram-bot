@@ -3,13 +3,18 @@ import { Message, Update } from 'typegram';
 
 export interface BotProperties {
   TOKEN: string;
-  SERVER_FOR_PING: string;
+  SERVER_FOR_PING: ServerForPing[];
   ADMIN_ID: number[];
   SUPPORTED_CHAT_ID: number[];
   DEBUG?: boolean;
   VERSION?: string;
   URL?: string;
-  NAME?: string;
+  NAME: string;
+}
+
+export interface ServerForPing {
+  NAME: string;
+  ADDRESS: string;
 }
 
 export interface BotContext

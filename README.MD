@@ -1,3 +1,3 @@
-#TELEGRAM-BOT
+# Telegram BOT based on Node.JS and TypeScript fow managing Wireguard VPN.
 
-1
+Work in progress...

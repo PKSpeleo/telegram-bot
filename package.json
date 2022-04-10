@@ -1,6 +1,6 @@
 {
   "name": "vpn-telegram-bot",
-  "version": "0.1.2-alpha.17",
+  "version": "0.1.2-alpha.18",
   "license": "MIT",
   "author": "Pavel Katkov",
   "main": "dist/app.ts",

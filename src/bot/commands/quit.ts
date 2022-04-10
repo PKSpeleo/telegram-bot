@@ -6,7 +6,8 @@ export async function reactOnQuitCommand(ctx: BotContext, botProperties: BotProp
   // ctx.telegram.leaveChat(ctx.message.chat.id);
   // Context shortcut
   const { isAdmin } = await extractRights(ctx, botProperties);
-  if (isAdmin) {
+  const isPrivateChat = ctx.from.id !== ctx.chat.id;
+  if (isAdmin && isPrivateChat) {
     ctx.reply('Goodbye ' + ctx.from.first_name + '!');
     ctx.leaveChat();
   }

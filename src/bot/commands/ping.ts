@@ -2,8 +2,8 @@ import { BotContext, BotProperties, ServerForPing } from '../shared/interfaces';
 import ping from 'ping';
 import { extractRights } from '../shared/rights';
 
-export function reactOnPingCommand(ctx: BotContext, botProperties: BotProperties) {
-  const { isAdmin, isSupportedChat } = extractRights(ctx, botProperties);
+export async function reactOnPingCommand(ctx: BotContext, botProperties: BotProperties) {
+  const { isAdmin, isSupportedChat } = await extractRights(ctx, botProperties);
   if (isAdmin || isSupportedChat) {
     const serversForPing = botProperties.SERVER_FOR_PING;
     const serversNamesForPing = serversForPing.map((value) => value.NAME);

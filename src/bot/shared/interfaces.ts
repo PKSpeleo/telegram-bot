@@ -1,6 +1,16 @@
 import { Context } from 'telegraf';
 import { Message, Update } from 'typegram';
 
+export const USER_STATUSES = {
+  CREATOR: 'creator',
+  ADMINISTRATOR: 'administrator',
+  MEMBER: 'member',
+  RESTRICTED: 'restricted',
+  LEFT: 'left',
+  BANNED: 'kicked',
+  UNKNOWN: 'unknown'
+};
+
 export interface BotProperties {
   TOKEN: string;
   SERVER_FOR_PING: ServerForPing[];
@@ -15,6 +25,11 @@ export interface BotProperties {
 export interface ServerForPing {
   NAME: string;
   ADDRESS: string;
+}
+
+export interface UserStatusForChat {
+  chatId: number;
+  userStatus: string;
 }
 
 export interface BotContext

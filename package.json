@@ -1,15 +1,15 @@
 {
   "name": "vpn-telegram-bot",
-  "version": "0.1.2-alpha.22",
+  "version": "0.1.2-alpha.23",
   "license": "MIT",
   "author": "Pavel Katkov",
   "main": "dist/app.ts",
   "scripts": {
-    "lint": "tsc --noEmit && eslint .",
+    "lint": "yarn tsc --noEmit && yarn eslint .",
     "env:dev": "cp .env.dev .env",
     "env:prod": "cp .env.prod .env",
     "test": "yarn jest",
-    "compile": "rm -rf dist && tsc",
+    "compile": "rm -rf dist && yarn tsc",
     "bundle": "mkdir dist/node && browserify --node --ignore-missing dist/js/src/app.js > dist/node/telegram_bot.js",
     "build": "yarn compile && yarn bundle",
     "start": "yarn build && yarn env:dev && node ./dist/node/telegram_bot.js",

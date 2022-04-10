@@ -1,6 +1,6 @@
 {
   "name": "vpn-telegram-bot",
-  "version": "0.1.2-alpha.19",
+  "version": "0.1.2-alpha.20",
   "license": "MIT",
   "author": "Pavel Katkov",
   "main": "dist/app.ts",
@@ -11,8 +11,8 @@
     "compile": "rm -rf dist && tsc",
     "bundle": "mkdir dist/node && browserify --node --ignore-missing dist/js/src/app.js > dist/node/telegram_bot.js",
     "build": "yarn compile && yarn bundle",
-    "start:dev": "yarn build && yarn env:dev && node ./dist/node/telegram_bot.js",
-    "develop:dev": "yarn env:dev && nodemon src/app.ts",
+    "start": "yarn build && yarn env:dev && node ./dist/node/telegram_bot.js",
+    "develop": "yarn env:dev && nodemon src/app.ts",
     "gh-secrets-update": "gh secret set --env-file .env.prod",
     "deploy-env": "yarn gh-secrets-update && gh workflow run 'Build and Deploy'",
     "prepare": "husky install",

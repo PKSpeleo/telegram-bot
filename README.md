@@ -1,4 +1,4 @@
-# Telegram BOT based on Node.JS and TypeScript row managing Wireguard VPN.
+# Telegram BOT based on Node.JS and TypeScript for managing Wireguard VPN.
 
 This is Telegram BOT based on Node.JS and TypeScript for managing Wireguard VPN accounts, with automatic deployment based on GitHub Actions. 
 

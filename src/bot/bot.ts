@@ -7,18 +7,16 @@ import { reactOnPingCommand } from './commands/ping';
 import { reactOnInfoCommand } from './commands/info';
 import { reactOnQuitCommand } from './commands/quit';
 import { logDebugInfoToConsole } from './shared/debug';
+import { sendMessagesToBosses } from './shared/boss';
 
 export async function startBot(botProperties: BotProperties) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
 
-  try {
-    await bot.telegram.sendMessage(
-      botProperties.ADMIN_ID[0],
-      `🤖 I'm Back! '${botProperties.VERSION}'`
-    );
-  } catch (err) {
-    console.log('Error: ', err);
-  }
+  await sendMessagesToBosses(
+    botProperties.ADMIN_ID,
+    bot,
+    `🤖 I'm Back! '${botProperties.VERSION}'`
+  );
 
   bot.start((ctx) => {
     logDebugInfoToConsole(ctx, botProperties);

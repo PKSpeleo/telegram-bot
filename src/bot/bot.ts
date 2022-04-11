@@ -11,6 +11,15 @@ import { logDebugInfoToConsole } from './shared/debug';
 export async function startBot(botProperties: BotProperties) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
 
+  try {
+    await bot.telegram.sendMessage(
+      botProperties.ADMIN_ID[0],
+      `🤖 Wow! Version ${botProperties.VERSION} deployed!`
+    );
+  } catch (err) {
+    console.log('Error: ', err);
+  }
+
   bot.start((ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     reactOnStartCommand(ctx);

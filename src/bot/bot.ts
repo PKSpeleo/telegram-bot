@@ -14,7 +14,7 @@ export async function startBot(botProperties: BotProperties) {
   try {
     await bot.telegram.sendMessage(
       botProperties.ADMIN_ID[0],
-      `🤖 Wow! Version ${botProperties.VERSION} deployed!`
+      `🤖 I'm Back! '${botProperties.VERSION}'`
     );
   } catch (err) {
     console.log('Error: ', err);

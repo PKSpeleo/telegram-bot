@@ -20,7 +20,7 @@ export async function startBot(botProperties: BotProperties) {
 
   bot.start((ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    reactOnStartCommand(ctx);
+    reactOnStartCommand(ctx, botProperties);
   });
 
   bot.help((ctx) => {

@@ -12,6 +12,6 @@ export async function reactOnInfoCommand(ctx: BotContext, botProperties: BotProp
     }')! ${isUserMemberOfSupportedChats ? '+' : '-'}
 Your ID is: '${ctx.from.id}' ${isAdmin ? '+' : '-'}
 This chat ID is: '${ctx.chat.id}' ${isSupportedChat ? '+' : '-'}
-I am '${botProperties.NAME}' Bot version: '${botProperties.VERSION}'`);
+I am '${botProperties.NAME}' Bot version: '${botProperties.VERSION}'`, { reply_to_message_id: ctx.message.message_id});
   }
 }

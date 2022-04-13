@@ -8,5 +8,5 @@ export async function reactOnStartCommand(ctx: BotContext, botProperties: BotPro
     ctx.from.username
   }) ${ctx.from.id} ${isUserMemberOfSupportedChats ? '+' : '-'} started chat with Me`;
   await sendMessagesToBosses(botProperties.ADMIN_ID, ctx, messageForBosses);
-  ctx.reply(`Hello, ${ctx.from.first_name} ${ctx.from.last_name} (@${ctx.from.username})!`);
+  ctx.reply(`Hello, ${ctx.from.first_name} ${ctx.from.last_name} (@${ctx.from.username})!`, { reply_to_message_id: ctx.message.message_id});
 }

@@ -12,7 +12,7 @@ export async function reactOnPingCommand(ctx: BotContext, botProperties: BotProp
 From '${botProperties.NAME}' I will ping ${
       serversForPing.length
     } servers: ${serversNamesForPing.join(', ')}.
-Please wait ${10 * serversForPing.length} seconds.`);
+Please wait ${10 * serversForPing.length} seconds.`, { reply_to_message_id: ctx.message.message_id});
 
     serversForPing.forEach((server) => {
       pingServer(server, ctx, botProperties.NAME);
@@ -31,14 +31,14 @@ function pingServer(server: ServerForPing, ctx: BotContext, botName: string) {
         ctx.reply(`I just pinged '${server.NAME}' from '${botName}'.
 The server works fine!
 Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.
-Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10`);
+Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10`, { reply_to_message_id: ctx.message.message_id});
       } else {
         ctx.reply(`The server NOT works!
 Response time: ${res.times.map((val) => Math.round(Number(val))).join(', ')} ms.
-Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10'`);
+Lost packages: ${Math.round(Number(res.packetLoss))}% out of 10'`, { reply_to_message_id: ctx.message.message_id});
       }
     })
     .catch((err) => {
-      ctx.reply('Error: ', err);
+      ctx.reply('Error!', { reply_to_message_id: ctx.message.message_id});
     });
 }

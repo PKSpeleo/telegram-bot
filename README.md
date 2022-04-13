@@ -9,7 +9,7 @@ Work in progress...
 ## What I want to do:
 - [x] Support different bots (server_1, server_2, dev) in one repo.
 - [x] Automatic deploy to different servers
-- [x] But must know who is Boss, what chats are supported and who is known user from supported chat
+- [x] Bot must know who is Boss, what chats are supported and who is known user from supported chat
 - [ ] Update Documentation to collect all necessary information about how to start this bot (with auto deploy) on fresh VPS.
 - [ ] Implement logging to Bosses private chat that someone using the Bot. 
 - [ ] Implement same logging to local file on server (with write queue). 
@@ -22,7 +22,70 @@ Work in progress...
 ### Known problems
 - [ ] Figure out with wired behaviour when admin post and call /commands in Channels comments (works fine for users)
 
-## Installation
+## Preparation.
 This BOT supposed to bi started on VPS servers with Ubuntu 20.
 Below you will find short instruction how to prepare VPS, what and how need to be installed and how organise your BOT developing process with automatic deploy by GitHub Actions.
 
+### Prepare your machine
+- Install [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm) and reboot
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+Then install Node:
+```shell
+nvm install 16.14.2
+```
+- [Generate RSA](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key)
+
+- Add aliases and vps config
+```shell
+nano ~/.ssh/config
+```
+```
+Host *
+ForwardAgent yes
+
+Host vps_server
+    HostName 1.1.1.1
+    User root
+    IdentityFile ~/.ssh/vps_rsa
+```
+Now you can access server by `ssh vps_server`
+
+### Prepare VPS
+- Copy PUB Rsa key to the Server
+```shell
+ scp ~/.ssh/vps_rsa.pub vps_server:~/.ssh/
+```
+- Add key to the config
+```shell
+cat ~/.ssh/rsa.pub >> ~/.ssh/authorized_keys
+```
+- Update apt-get
+```shell
+apt-get update
+```
+- Install speedtest
+```shell
+curl -s https://install.speedtest.net/app/cli/install.deb.sh | sudo bash
+```
+- Install resources monitor [htop](https://htop.dev/)
+```shell
+apt install htop
+```
+- Install network monitor nload
+```shell
+apt install nload
+```
+- Install [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm) and reboot
+```shell
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+- Install Node:
+```shell
+nvm install 16.14.2
+```
+- Install PROCESS MANAGER FOR NODE.JS [pm2](https://pm2.keymetrics.io/)
+```shell
+npm install pm2 -g
+```

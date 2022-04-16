@@ -25,12 +25,12 @@ export class Logger {
     let statusMessageEnd = '';
     switch (status) {
       case 'debug':
-        statusMessageBegin = chalk.yellow('🐞 ⬇ ⬇ ⬇ Debug info ⬇ ⬇ ⬇ 🐞');
-        statusMessageEnd = chalk.yellow('🐞 ⬆ ⬆ ⬆ Debug info ⬆ ⬆ ⬆ 🐞');
+        statusMessageBegin = chalk.yellow('🪲 --- Debug info --- 🪲');
+        statusMessageEnd = chalk.yellow('🪲 --- Debug info --- 🪲');
         break;
       case 'error':
-        statusMessageBegin = chalk.red('🛑 ⬇ ⬇ ⬇ Error info ⬇ ⬇ ⬇ 🛑');
-        statusMessageEnd = chalk.red('🛑 ⬆ ⬆ ⬆ Error info ⬆ ⬆ ⬆ 🛑');
+        statusMessageBegin = chalk.red('🛑 --- Error info --- 🛑');
+        statusMessageEnd = chalk.red('🛑 --- Error info --- 🛑');
         break;
       default:
         console.log(`${chalk.cyan(this.getLocalDateString())}: ${string}`);

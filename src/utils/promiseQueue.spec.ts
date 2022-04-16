@@ -40,7 +40,7 @@ describe('promiseQueue', () => {
     await expect(queuePlayground(queue)).resolves.not.toThrow();
   });
 
-  it('should handle one resolved item', async () => {
+  it('should handle one resolved promise', async () => {
     mockSpy('Enqueue promise 1');
     queue.enqueue(mockResolvedFunction('1', 10)).then((value) => {
       mockSpy(`Promise 1 finished with ${value}`);
@@ -55,7 +55,7 @@ describe('promiseQueue', () => {
     expect(mockSpy).toHaveBeenNthCalledWith(3, 'Promise 1 finished with resolve_value_1');
   });
 
-  it('should handle two resolved items with correct order', async () => {
+  it('should handle two resolved promises with correct order', async () => {
     mockSpy('Enqueue promise 1');
     queue.enqueue(mockResolvedFunction('1', 30)).then((value) => {
       mockSpy(`Promise 1 finished with ${value}`);
@@ -80,7 +80,7 @@ describe('promiseQueue', () => {
     expect(mockSpy).toHaveBeenNthCalledWith(6, 'Promise 2 finished with resolve_value_2');
   });
 
-  it('should handle two resolved items with correct order and rejected in the middle', async () => {
+  it('should handle two resolved promises and rejected in the middle with correct order', async () => {
     mockSpy('Enqueue promise 1');
     queue.enqueue(mockResolvedFunction('1', 50)).then((value) => {
       mockSpy(`Promise 1 finished with ${value}`);

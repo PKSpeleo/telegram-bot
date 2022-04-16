@@ -33,10 +33,6 @@ export function extractEnv(): BotProperties {
     NAME: currentBotSettingsObj.NAME || ''
   };
 
-  if (botProperties.DEBUG) {
-    console.log('Debug mode enabled! Start command will be logged to the console.');
-  }
-
   return botProperties;
 }
 

@@ -45,8 +45,10 @@ describe('promiseQueue', () => {
     queue.enqueue(mockResolvedFunction('1', 10)).then((value) => {
       mockSpy(`Promise 1 finished with ${value}`);
     });
+
     jest.advanceTimersByTime(10);
     await flushPromises();
+
     expect(mockSpy).toHaveBeenCalledTimes(3);
     expect(mockSpy).toHaveBeenNthCalledWith(1, 'Enqueue promise 1');
     expect(mockSpy).toHaveBeenNthCalledWith(2, 'Started promise 1');
@@ -58,14 +60,17 @@ describe('promiseQueue', () => {
     queue.enqueue(mockResolvedFunction('1', 30)).then((value) => {
       mockSpy(`Promise 1 finished with ${value}`);
     });
+
     mockSpy('Enqueue promise 2');
     queue.enqueue(mockResolvedFunction('2', 20)).then((value) => {
       mockSpy(`Promise 2 finished with ${value}`);
     });
+
     jest.advanceTimersByTime(30);
     await flushPromises();
     jest.advanceTimersByTime(20);
     await flushPromises();
+
     expect(mockSpy).toHaveBeenCalledTimes(6);
     expect(mockSpy).toHaveBeenNthCalledWith(1, 'Enqueue promise 1');
     expect(mockSpy).toHaveBeenNthCalledWith(2, 'Started promise 1');
@@ -80,20 +85,24 @@ describe('promiseQueue', () => {
     queue.enqueue(mockResolvedFunction('1', 50)).then((value) => {
       mockSpy(`Promise 1 finished with ${value}`);
     });
+
     mockSpy('Enqueue promise 2');
     queue.enqueue(mockRejectedFunction('2', 20)).catch((value) => {
       mockSpy(`Promise 2 rejected with ${value}`);
     });
+
     mockSpy('Enqueue promise 3');
     queue.enqueue(mockResolvedFunction('3', 10)).then((value) => {
       mockSpy(`Promise 3 finished with ${value}`);
     });
+
     jest.advanceTimersByTime(50);
     await flushPromises();
     jest.advanceTimersByTime(20);
     await flushPromises();
     jest.advanceTimersByTime(10);
     await flushPromises();
+
     expect(mockSpy).toHaveBeenCalledTimes(9);
     expect(mockSpy).toHaveBeenNthCalledWith(1, 'Enqueue promise 1');
     expect(mockSpy).toHaveBeenNthCalledWith(2, 'Started promise 1');

@@ -3,7 +3,7 @@ module.exports = {
     {
       name: 'telegram_bot',
       script: './telegram_bot.js',
-      watch: ['./*']
+      watch: ['telegram_bot.js', '.env']
     }
   ]
 };

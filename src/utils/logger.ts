@@ -14,7 +14,7 @@ export class Logger {
   public writeToLogFile(string: string): void {
     const stringWithDate = `${this.getLocalDateString()}: ${string}\n`;
     this.logFileQueue
-      .enqueue(() => fs.promises.appendFile('./bot-log.txt', stringWithDate))
+      .enqueue(() => fs.promises.appendFile('./log_bot.txt', stringWithDate))
       .catch((err) => {
         this.logToConsole(err, 'error');
       });

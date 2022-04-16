@@ -6,10 +6,11 @@ import { reactOnHelpCommand } from './commands/help';
 import { reactOnPingCommand } from './commands/ping';
 import { reactOnInfoCommand } from './commands/info';
 import { reactOnQuitCommand } from './commands/quit';
-import { logDebugInfoToConsole } from './shared/debug';
+import { logDebugInfoToConsole, stringifyDebugDate } from './shared/debug';
 import { sendMessagesToBosses } from './shared/boss';
+import { Logger } from '../utils/logger';
 
-export async function startBot(botProperties: BotProperties) {
+export async function startBot(botProperties: BotProperties, logger: Logger) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
 
   await sendMessagesToBosses(
@@ -20,26 +21,31 @@ export async function startBot(botProperties: BotProperties) {
 
   bot.start((ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(stringifyDebugDate(ctx));
     reactOnStartCommand(ctx, botProperties);
   });
 
   bot.help((ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(stringifyDebugDate(ctx));
     reactOnHelpCommand(ctx);
   });
 
   bot.command('ping', (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(stringifyDebugDate(ctx));
     reactOnPingCommand(ctx, botProperties);
   });
 
   bot.command('info', (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(stringifyDebugDate(ctx));
     reactOnInfoCommand(ctx, botProperties);
   });
 
   bot.command('quit', (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(stringifyDebugDate(ctx));
     reactOnQuitCommand(ctx, botProperties);
   });
 

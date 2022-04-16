@@ -20,7 +20,7 @@ Version: ${botProperties.VERSION}`,
   'debug'
 );
 
-startBot(botProperties)
+startBot(botProperties, logger)
   .then(() => {
     logger.logToConsole('🤖 ✅ Bot started successfully!');
     logger.writeToLogFile('🤖 ✅ Bot started successfully!');

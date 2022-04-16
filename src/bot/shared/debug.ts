@@ -24,3 +24,7 @@ massage: ${ctx.message.text}`);
     );
   }
 }
+
+export function stringifyDebugDate(ctx: BotContext): string {
+  return `User: '${ctx.from.first_name}' '${ctx.from.last_name}' '${ctx.from.username}' with ID: '${ctx.from.id}', chat ID: '${ctx.chat.id}', command: '${ctx.message.text}'`;
+}

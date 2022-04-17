@@ -9,6 +9,7 @@ import { reactOnQuitCommand } from './commands/quit';
 import { logDebugInfoToConsole, stringifyDebugDate } from './shared/debug';
 import { sendMessagesToBosses } from './shared/boss';
 import { Logger } from '../utils/logger';
+import { reactOnLogCommand } from './commands/log';
 
 export async function startBot(botProperties: BotProperties, logger: Logger) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
@@ -41,6 +42,12 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(stringifyDebugDate(ctx));
     reactOnInfoCommand(ctx, botProperties);
+  });
+
+  bot.command('log', (ctx) => {
+    logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(stringifyDebugDate(ctx));
+    reactOnLogCommand(ctx, botProperties, logger);
   });
 
   bot.command('quit', (ctx) => {

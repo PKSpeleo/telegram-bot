@@ -20,31 +20,34 @@ export class Logger {
   }
 
   public async getLastLogStrings(stringsQuantity = 10): Promise<GetLogOutput> {
-    return new Promise((resolve, reject) => {
-      const lastLogStrings: string[] = [];
-      let totalStringsAmount = 0;
-      const rl = readline.createInterface({
-        input: fs.createReadStream(this.LOG_FILE_NAME),
-        crlfDelay: Infinity
-      });
-      rl.on('line', (line) => {
-        lastLogStrings.push(line);
-        totalStringsAmount++;
-        if (lastLogStrings.length > stringsQuantity) {
-          lastLogStrings.shift();
-        }
-      });
-      rl.on('close', () => {
-        resolve({
-          totalStringsAmount: totalStringsAmount,
-          requestedStringsAmount: stringsQuantity,
-          logStrings: lastLogStrings
-        });
-      });
-      rl.on('error', (err) => {
-        reject(err);
-      });
-    });
+    return this.logFileQueue.enqueue(
+      () =>
+        new Promise((resolve, reject) => {
+          const lastLogStrings: string[] = [];
+          let totalStringsAmount = 0;
+          const rl = readline.createInterface({
+            input: fs.createReadStream(this.LOG_FILE_NAME),
+            crlfDelay: Infinity
+          });
+          rl.on('line', (line) => {
+            lastLogStrings.push(line);
+            totalStringsAmount++;
+            if (lastLogStrings.length > stringsQuantity) {
+              lastLogStrings.shift();
+            }
+          });
+          rl.on('close', () => {
+            resolve({
+              totalStringsAmount: totalStringsAmount,
+              requestedStringsAmount: stringsQuantity,
+              logStrings: lastLogStrings
+            });
+          });
+          rl.on('error', (err) => {
+            reject(err);
+          });
+        })
+    );
   }
 
   public writeToLogFile(string: string): void {

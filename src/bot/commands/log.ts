@@ -8,7 +8,6 @@ export async function reactOnLogCommand(
   logger: Logger
 ) {
   const messageParts = ctx.message.text.split(' ');
-  //TODO be careful - bot will restart if to big message, need to handle it without restart
   let stringsAmount = 10;
   if (messageParts.length == 2) {
     const amountString: string = messageParts[1];
@@ -21,14 +20,18 @@ export async function reactOnLogCommand(
   const isPrivateChat = ctx.from.id == ctx.chat.id;
   if (isAdmin && isPrivateChat) {
     const lastLogLines = await logger.getLastLogStrings(stringsAmount);
-    ctx.reply(
-      `Total strings in the Log: ${lastLogLines.totalStringsAmount}
+    ctx
+      .reply(
+        `Total strings in the Log: ${lastLogLines.totalStringsAmount}
 last ${lastLogLines.requestedStringsAmount} strings of Log: \n${lastLogLines.logStrings.join(
-        '\n'
-      )}`,
-      {
-        reply_to_message_id: ctx.message.message_id
-      }
-    );
+          '\n'
+        )}`,
+        {
+          reply_to_message_id: ctx.message.message_id
+        }
+      )
+      .catch(() => {
+        logger.writeToLogFile('🛑 Error during replay. To big message.');
+      });
   }
 }

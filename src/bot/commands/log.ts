@@ -32,6 +32,9 @@ last ${lastLogLines.requestedStringsAmount} strings of Log: \n${lastLogLines.log
       )
       .catch(() => {
         logger.writeToLogFile('🛑 Error during replay. To big message.');
+        ctx.reply(`🛑 Error during replay. To big message. Look like it is too big Log =)`, {
+          reply_to_message_id: ctx.message.message_id
+        });
       });
   }
 }

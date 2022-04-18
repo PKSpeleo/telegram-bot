@@ -54,6 +54,11 @@ Host vps_server
 ```
 Now you can access server by `ssh vps_server`
 
+- Add Wireguard tools to macOS for debugging=)
+```shell
+brew install wireguard-tools
+```
+
 ### Prepare VPS
 - Copy PUB Rsa key to the Server
 ```shell

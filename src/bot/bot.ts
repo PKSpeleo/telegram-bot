@@ -20,39 +20,39 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     `🤖 I'm Back! '${botProperties.VERSION}'`
   );
 
-  bot.start((ctx) => {
+  bot.start(async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    logger.writeToLogFile(stringifyDebugDate(ctx));
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnStartCommand(ctx, botProperties);
   });
 
-  bot.help((ctx) => {
+  bot.help(async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    logger.writeToLogFile(stringifyDebugDate(ctx));
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnHelpCommand(ctx);
   });
 
-  bot.command('ping', (ctx) => {
+  bot.command('ping', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    logger.writeToLogFile(stringifyDebugDate(ctx));
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnPingCommand(ctx, botProperties);
   });
 
-  bot.command('info', (ctx) => {
+  bot.command('info', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    logger.writeToLogFile(stringifyDebugDate(ctx));
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnInfoCommand(ctx, botProperties);
   });
 
-  bot.command('log', (ctx) => {
+  bot.command('log', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    logger.writeToLogFile(stringifyDebugDate(ctx));
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnLogCommand(ctx, botProperties, logger);
   });
 
-  bot.command('quit', (ctx) => {
+  bot.command('quit', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
-    logger.writeToLogFile(stringifyDebugDate(ctx));
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnQuitCommand(ctx, botProperties);
   });
 

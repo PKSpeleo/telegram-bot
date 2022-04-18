@@ -11,8 +11,8 @@ Work in progress...
 - [x] Automatic deploy to different servers
 - [x] Bot must know who is Boss, what chats are supported and who is known user from supported chat
 - [ ] Update Documentation to collect all necessary information about how to start this bot (with auto deploy) on fresh VPS.
-- [ ] Implement logging to Bosses private chat that someone using the Bot. 
-- [ ] Implement same logging to local file on server (with write queue). 
+- [x] Implement logging to Bosses private chat that someone using the Bot. 
+- [x] Implement same logging to local file on server (with write queue). 
 - [ ] Lunch console commands and parse the result by Bot command form Boss
 - [ ] Implement Wireguard config file reading and writing (add fake user)
 - [ ] Explore commands to update Wireguard
@@ -27,6 +27,8 @@ This BOT supposed to bi started on VPS servers with Ubuntu 20.
 Below you will find short instruction how to prepare VPS, what and how need to be installed and how organise your BOT developing process with automatic deploy by GitHub Actions.
 
 ### Prepare your machine
+Right now these documentations looks like collection of necessary commands for run everything and do not search them aging in documentations. Maybe later it will be better ;)
+
 - Install [Node Version Manager (NVM)](https://github.com/nvm-sh/nvm) and reboot
 ```shell
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
@@ -88,4 +90,29 @@ nvm install 16.14.2
 - Install PROCESS MANAGER FOR NODE.JS [pm2](https://pm2.keymetrics.io/)
 ```shell
 npm install pm2 -g
+```
+
+### Using PM2 for lunching pre-build and bundled node app
+- Copy PM2 config file to the server
+```shell
+scp ecosystem.config.js vps_server:/root/telegram-bot
+```
+- Copy `telegram_bot.js` and go to the server, lunch the app by PM2 and add to startup:
+```shell
+pm2 start ecosystem.config.js && \
+pm2 startup
+```
+- Stopping and removing from startup
+```shell
+pm2 stop ecosystem.config.js && \
+pm2 unstartup && \
+pm2 delete ecosystem.config.js
+```
+- Useful commands
+```shell
+pm2 restart all
+pm2 stop all
+pm2 start all
+pm2 list
+pm2 monit
 ```

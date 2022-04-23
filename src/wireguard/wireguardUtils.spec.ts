@@ -2,7 +2,8 @@ import {
   extractConfigAndAdditionalInformation,
   parseTypicalConfig,
   parseWireguardConfig,
-  serializeInterface, serializePeer,
+  serializeInterface,
+  serializePeer,
   serializeWireguardConfig
 } from './wireguardUtils';
 
@@ -10,70 +11,69 @@ import {
 describe('wireguardUtils', () => {
   describe('Parsing', () => {
     describe('parseWireguardConfig', () => {
-      test('should parse config', async () => {
+      test('should parse config', () => {
         const result = parseWireguardConfig(mockedConfig);
-        await expect(result).toEqual(parsedConfig);
+        expect(result).toEqual(parsedConfig);
       });
     });
 
     describe('parseTypicalConfig', () => {
-      test('should original parse interface', async () => {
+      test('should original parse interface', () => {
         const result = parseTypicalConfig(originalInterface);
-        await expect(result).toEqual(parsedInterface);
+        expect(result).toEqual(parsedInterface);
       });
 
-      test('should parse original peer', async () => {
+      test('should parse original peer', () => {
         const result = parseTypicalConfig(originalPeer);
-        await expect(result).toEqual(parsedPeer);
+        expect(result).toEqual(parsedPeer);
       });
     });
 
     describe('extractConfigAndAdditionalInformation', () => {
-      test('should extract interface with additional data', async () => {
+      test('should extract interface with additional data', () => {
         const result = extractConfigAndAdditionalInformation(interfaceWithAdditionalData);
-        await expect(result).toEqual(extractedInterfaceWithAdditionalData);
+        expect(result).toEqual(extractedInterfaceWithAdditionalData);
       });
 
-      test('should extract peer with additional data', async () => {
+      test('should extract peer with additional data', () => {
         const result = extractConfigAndAdditionalInformation(peerWithAdditionalInformation);
-        await expect(result).toEqual(extractedPeerWithAdditionalInformation);
+        expect(result).toEqual(extractedPeerWithAdditionalInformation);
       });
 
-      test('should extract peer without additional data', async () => {
+      test('should extract peer without additional data', () => {
         const result = extractConfigAndAdditionalInformation(clearPeerWithAdditionalInformation);
-        await expect(result).toEqual(extractedClearPeerWithAdditionalInformation);
+        expect(result).toEqual(extractedClearPeerWithAdditionalInformation);
       });
     });
 
     describe('Circular test', () => {
-      test('should parse and serialize to the same config', async () => {
+      test('should parse and serialize to the same config', () => {
         const parsed = parseWireguardConfig(mockedConfig);
-        const serialized = serializeWireguardConfig(parsed)
-        await expect(serialized).toEqual(mockedConfig);
+        const serialized = serializeWireguardConfig(parsed);
+        expect(serialized).toEqual(mockedConfig);
       });
     });
   });
 
   describe('Serializing', () => {
     describe('serializeWireguardConfig', () => {
-      test('should create correct config from object', async () => {
+      test('should create correct config from object', () => {
         const result = serializeWireguardConfig(parsedConfig);
-        await expect(result).toEqual(mockedConfig);
+        expect(result).toEqual(mockedConfig);
       });
     });
 
-
     describe('serializeInterface', () => {
-      test('should create correct interface config from object', async () => {
+      test('should create correct interface config from object', () => {
         const result = serializeInterface(parsedInterfaceConfig);
-        await expect(result).toEqual(serializedInterfaceConfig);
+        expect(result).toEqual(serializedInterfaceConfig);
       });
     });
 
     describe('serializePeer', () => {
-      test('should create correct peer config from object', async () => {
+      test('should create correct peer config from object', () => {
         const result = serializePeer(parsedPeerConfig);
-        await expect(result).toEqual(serializedPeerConfig);
+        expect(result).toEqual(serializedPeerConfig);
       });
     });
   });

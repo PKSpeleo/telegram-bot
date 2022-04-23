@@ -182,24 +182,28 @@ PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT
 PostDown = ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 
 ### Client NL_PK_Mac
-# userName = tru-la-la-1
+# lastUpdate = 22-10-2022 23:32 (+0)
 # firstName = la-la-tru-2
+# lastName = last name
+# userName = tru-la-la-1
+# userId = 23123123123
+# fileName = nl2_123456789_1
 [Peer]
 PublicKey = dsfjsfjaslkdjfoajsdf jasfjlasjdfl;j asldjf lajsdf
 PresharedKey = asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf
 AllowedIPs = 10.66.66.2/32,fd42:42:42::2/128
 
 ### Client NL_PK_Phone
-# userName = tru-la-la-3
 # firstName = la-la-tru-4
+# userName = tru-la-la-3
 [Peer]
 PublicKey = dafkjs;fvmn,xcnvioqur0uwer[ujfas=
 PresharedKey = asdfiop4iefjkdsafk;hjsiwue
 AllowedIPs = 10.66.66.3/32,fd42:42:42::3/128
 
 ### Client NL_LV_Phone
-# userName = tru-la-la-5
 # firstName = la-la-tru-6
+# userName = tru-la-la-5
 [Peer]
 PublicKey = Yasdfkjsfk;auwioetrhjfds
 PresharedKey = asdkfjfiu930wterioghjkfdls;ghjiuoerpwjkl
@@ -238,7 +242,11 @@ const parsedConfig = {
       },
       data: {
         firstName: 'la-la-tru-2',
-        userName: 'tru-la-la-1'
+        lastName: 'last name',
+        userName: 'tru-la-la-1',
+        userId: '23123123123',
+        lastUpdate: '22-10-2022 23:32 (+0)',
+        fileName: 'nl2_123456789_1'
       },
       title: 'Client NL_PK_Mac',
       type: '[Peer]'
@@ -315,5 +323,4 @@ PostDown = iptables -D FORWARD -i eth0 -o wg0 -j ACCEPT
 PostDown = iptables -D FORWARD -i wg0 -j ACCEPT
 PostDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT
-PostDown = ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
-`;
+PostDown = ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE`;

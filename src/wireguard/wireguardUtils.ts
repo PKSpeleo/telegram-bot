@@ -33,6 +33,8 @@ interface PeerDataConfig {
   userName?: string;
   firstName?: string;
   lastName?: string;
+  lastUpdate?: string;
+  fileName?: string;
 }
 
 interface PeerConfigConfig {
@@ -76,7 +78,11 @@ export function parseWireguardConfig(wireguardConfigString: string): WireguardCo
       type: extractedPeer.type,
       data: {
         userName: parsedPeerData.userName,
-        firstName: parsedPeerData.firstName
+        firstName: parsedPeerData.firstName,
+        lastName: parsedPeerData.lastName,
+        userId: parsedPeerData.userId,
+        lastUpdate: parsedPeerData.lastUpdate,
+        fileName: parsedPeerData.fileName
       },
       config: {
         PublicKey: parsedPeerConfig.PublicKey || '',
@@ -144,7 +150,42 @@ export function serializeInterface(parsedConfig: InterfaceConfig): string {
 
   const config =
     configPrivateKey + configAddress + configListenPort + configPostUp + configPostDown;
-  return title + data + type + config;
+  return title + data + type + config.trim();
+}
+
+export function serializePeer(parsedConfig: InterfaceConfig): string {
+  const title = `### ${parsedConfig.title}\n`;
+  let data = ``;
+  if (parsedConfig.data?.lastUpdate) {
+    data = `# lastUpdate = ${parsedConfig.data?.lastUpdate}\n`;
+  }
+  const type = `${parsedConfig.type}\n`;
+
+  const configPrivateKey = `PrivateKey = ${parsedConfig.config.PrivateKey}\n`;
+
+  let configAddress = '';
+  const configAddressArray = parsedConfig.config.Address.split(',');
+  configAddressArray.forEach((address) => {
+    configAddress = configAddress + `Address = ${address}\n`;
+  });
+
+  const configListenPort = `ListenPort = ${parsedConfig.config.ListenPort}\n`;
+
+  let configPostUp = '';
+  const configPostUpArray = parsedConfig.config.PostUp.split(',');
+  configPostUpArray.forEach((PostUp) => {
+    configPostUp = configPostUp + `PostUp = ${PostUp}\n`;
+  });
+
+  let configPostDown = '';
+  const configPostDownArray = parsedConfig.config.PostDown.split(',');
+  configPostDownArray.forEach((PostDown) => {
+    configPostDown = configPostDown + `PostDown = ${PostDown}\n`;
+  });
+
+  const config =
+    configPrivateKey + configAddress + configListenPort + configPostUp + configPostDown;
+  return title + data + type + config.trim();
 }
 
 export function parseTypicalConfig(interfaceConfigString: string) {

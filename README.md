@@ -6,6 +6,9 @@ It must have a lot of nice features, soon ;)
 
 Work in progress...
 
+By the way!
+[Here](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardUtils.ts) you can find my Wireguard Config File Parser and Serializer on TypeScrip with tests;)
+
 ## What I want to do:
 - [x] Support different bots (server_1, server_2, dev) in one repo.
 - [x] Automatic deploy to different servers
@@ -13,14 +16,16 @@ Work in progress...
 - [ ] Update Documentation to collect all necessary information about how to start this bot (with auto deploy) on fresh VPS.
 - [x] Implement logging to Bosses private chat that someone using the Bot. 
 - [x] Implement same logging to local file on server (with write queue). 
-- [ ] Lunch console commands and parse the result by Bot command form Boss
-- [ ] Implement Wireguard config file reading and writing (add fake user)
+- [x] Lunch console commands and parse the result by Bot command form Boss
+- [x] Implement Wireguard Config File Parser and Serializer
 - [ ] Explore commands to update Wireguard
+- [ ] Implement adding new user and rebooting Wireguard
 - [ ] Generate new user data (config for server and for user)
 - [ ] Implement whole flow of the user creation with Bot 
 
 ### Known problems
 - [ ] Figure out with wired behaviour when admin post and call /commands in Channels comments (works fine for users)
+- [ ] Need to refactor monster [Wireguard Config File Parser and Serializer](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardUtils.ts)
 
 ## Preparation.
 This BOT supposed to bi started on VPS servers with Ubuntu 20.

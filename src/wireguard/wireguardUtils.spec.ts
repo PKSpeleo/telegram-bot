@@ -6,6 +6,7 @@ import {
   serializeWireguardConfig
 } from './wireguardUtils';
 
+//TODO please refactor me ;)
 describe('wireguardUtils', () => {
   describe('Parsing', () => {
     describe('parseWireguardConfig', () => {
@@ -43,9 +44,25 @@ describe('wireguardUtils', () => {
         await expect(result).toEqual(extractedClearPeerWithAdditionalInformation);
       });
     });
+
+    describe('Circular test', () => {
+      test('should parse and serialize to the same config', async () => {
+        const parsed = parseWireguardConfig(mockedConfig);
+        const serialized = serializeWireguardConfig(parsed)
+        await expect(serialized).toEqual(mockedConfig);
+      });
+    });
   });
 
   describe('Serializing', () => {
+    describe('serializeWireguardConfig', () => {
+      test('should create correct config from object', async () => {
+        const result = serializeWireguardConfig(parsedConfig);
+        await expect(result).toEqual(mockedConfig);
+      });
+    });
+
+
     describe('serializeInterface', () => {
       test('should create correct interface config from object', async () => {
         const result = serializeInterface(parsedInterfaceConfig);
@@ -199,7 +216,8 @@ PostDown = ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 [Peer]
 PublicKey = dsfjsfjaslkdjfoajsdf jasfjlasjdfl;j asldjf lajsdf
 PresharedKey = asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf
-AllowedIPs = 10.66.66.2/32,fd42:42:42::2/128
+AllowedIPs = 10.66.66.2/32
+AllowedIPs = fd42:42:42::2/128
 
 ### Client NL_PK_Phone
 # firstName = la-la-tru-4
@@ -207,7 +225,8 @@ AllowedIPs = 10.66.66.2/32,fd42:42:42::2/128
 [Peer]
 PublicKey = dafkjs;fvmn,xcnvioqur0uwer[ujfas=
 PresharedKey = asdfiop4iefjkdsafk;hjsiwue
-AllowedIPs = 10.66.66.3/32,fd42:42:42::3/128
+AllowedIPs = 10.66.66.3/32
+AllowedIPs = fd42:42:42::3/128
 
 ### Client NL_LV_Phone
 # firstName = la-la-tru-6
@@ -215,13 +234,16 @@ AllowedIPs = 10.66.66.3/32,fd42:42:42::3/128
 [Peer]
 PublicKey = Yasdfkjsfk;auwioetrhjfds
 PresharedKey = asdkfjfiu930wterioghjkfdls;ghjiuoerpwjkl
-AllowedIPs = 10.66.66.4/32,fd42:42:42::4/128
+AllowedIPs = 10.66.66.4/32
+AllowedIPs = fd42:42:42::4/128
 
 ### Client NL_KS_Win
 [Peer]
 PublicKey = dsfjhiueorpwtjkghiuopfjaklsgdhioutpwjerklghsdfi
 PresharedKey = aklsjdfklasdasfhahshlflasjhfafs
-AllowedIPs = 10.66.66.5/32,fd42:42:42::5/128
+AllowedIPs = 10.66.66.5/32
+AllowedIPs = fd42:42:42::5/128
+
 `;
 
 const parsedConfig = {

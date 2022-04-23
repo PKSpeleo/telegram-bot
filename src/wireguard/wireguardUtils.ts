@@ -54,7 +54,7 @@ interface WireguardConfig {
   interface: InterfaceConfig;
   peers: PeerConfig[];
 }
-
+//TODO please refactor me ;)
 //TODO add keepalive and DNS for peer or server
 export function parseWireguardConfig(wireguardConfigString: string): WireguardConfig {
   const commentedParts = wireguardConfigString.split(/(?=###)/g);
@@ -115,7 +115,16 @@ export function parseWireguardConfig(wireguardConfigString: string): WireguardCo
 }
 
 export function serializeWireguardConfig(parsedConfig: WireguardConfig): string {
-  return '';
+  //TODO remove new lines if not peers
+  const serializedInterface = `${serializeInterface(parsedConfig.interface)}\n\n`;
+
+  let serializedPeers = '';
+  parsedConfig.peers.forEach((peer) => {
+    //TODO remove new lines at the end of array
+    serializedPeers = serializedPeers + `${serializePeer(peer)}\n\n`;
+  });
+
+  return serializedInterface + serializedPeers;
 }
 
 export function serializeInterface(parsedConfig: InterfaceConfig): string {

@@ -1,7 +1,8 @@
 import {
   extractConfigAndAdditionalInformation,
   parseTypicalConfig,
-  parseWireguardConfig, serializeInterface,
+  parseWireguardConfig,
+  serializeInterface, serializePeer,
   serializeWireguardConfig
 } from './wireguardUtils';
 
@@ -49,6 +50,13 @@ describe('wireguardUtils', () => {
       test('should create correct interface config from object', async () => {
         const result = serializeInterface(parsedInterfaceConfig);
         await expect(result).toEqual(serializedInterfaceConfig);
+      });
+    });
+
+    describe('serializePeer', () => {
+      test('should create correct peer config from object', async () => {
+        const result = serializePeer(parsedPeerConfig);
+        await expect(result).toEqual(serializedPeerConfig);
       });
     });
   });
@@ -324,3 +332,34 @@ PostDown = iptables -D FORWARD -i wg0 -j ACCEPT
 PostDown = iptables -t nat -D POSTROUTING -o eth0 -j MASQUERADE
 PostDown = ip6tables -D FORWARD -i wg0 -j ACCEPT
 PostDown = ip6tables -t nat -D POSTROUTING -o eth0 -j MASQUERADE`;
+
+const parsedPeerConfig = {
+  config: {
+    AllowedIPs: '10.66.66.2/32,fd42:42:42::2/128',
+    PresharedKey: 'asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf',
+    PublicKey: 'dsfjsfjaslkdjfoajsdf jasfjlasjdfl;j asldjf lajsdf'
+  },
+  data: {
+    firstName: 'la-la-tru-2',
+    lastName: 'last name',
+    userName: 'tru-la-la-1',
+    userId: '23123123123',
+    lastUpdate: '22-10-2022 23:32 (+0)',
+    fileName: 'nl2_123456789_1'
+  },
+  title: 'Client NL_PK_Mac',
+  type: '[Peer]'
+};
+
+const serializedPeerConfig = `### Client NL_PK_Mac
+# lastUpdate = 22-10-2022 23:32 (+0)
+# firstName = la-la-tru-2
+# lastName = last name
+# userName = tru-la-la-1
+# userId = 23123123123
+# fileName = nl2_123456789_1
+[Peer]
+PublicKey = dsfjsfjaslkdjfoajsdf jasfjlasjdfl;j asldjf lajsdf
+PresharedKey = asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf
+AllowedIPs = 10.66.66.2/32
+AllowedIPs = fd42:42:42::2/128`;

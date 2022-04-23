@@ -153,38 +153,41 @@ export function serializeInterface(parsedConfig: InterfaceConfig): string {
   return title + data + type + config.trim();
 }
 
-export function serializePeer(parsedConfig: InterfaceConfig): string {
+export function serializePeer(parsedConfig: PeerConfig): string {
   const title = `### ${parsedConfig.title}\n`;
   let data = ``;
   if (parsedConfig.data?.lastUpdate) {
-    data = `# lastUpdate = ${parsedConfig.data?.lastUpdate}\n`;
+    data = data + `# lastUpdate = ${parsedConfig.data?.lastUpdate}\n`;
   }
+  if (parsedConfig.data?.firstName) {
+    data = data + `# firstName = ${parsedConfig.data?.firstName}\n`;
+  }
+  if (parsedConfig.data?.lastName) {
+    data = data + `# lastName = ${parsedConfig.data?.lastName}\n`;
+  }
+  if (parsedConfig.data?.userName) {
+    data = data + `# userName = ${parsedConfig.data?.userName}\n`;
+  }
+  if (parsedConfig.data?.userId) {
+    data = data + `# userId = ${parsedConfig.data?.userId}\n`;
+  }
+  if (parsedConfig.data?.fileName) {
+    data = data + `# fileName = ${parsedConfig.data?.fileName}\n`;
+  }
+
   const type = `${parsedConfig.type}\n`;
 
-  const configPrivateKey = `PrivateKey = ${parsedConfig.config.PrivateKey}\n`;
+  const configPublicKey = `PublicKey = ${parsedConfig.config.PublicKey}\n`;
 
-  let configAddress = '';
-  const configAddressArray = parsedConfig.config.Address.split(',');
-  configAddressArray.forEach((address) => {
-    configAddress = configAddress + `Address = ${address}\n`;
+  const configPresharedKey = `PresharedKey = ${parsedConfig.config.PresharedKey}\n`;
+
+  let configAllowedIPs = '';
+  const configAllowedIPsArray = parsedConfig.config.AllowedIPs.split(',');
+  configAllowedIPsArray.forEach((address) => {
+    configAllowedIPs = configAllowedIPs + `AllowedIPs = ${address}\n`;
   });
 
-  const configListenPort = `ListenPort = ${parsedConfig.config.ListenPort}\n`;
-
-  let configPostUp = '';
-  const configPostUpArray = parsedConfig.config.PostUp.split(',');
-  configPostUpArray.forEach((PostUp) => {
-    configPostUp = configPostUp + `PostUp = ${PostUp}\n`;
-  });
-
-  let configPostDown = '';
-  const configPostDownArray = parsedConfig.config.PostDown.split(',');
-  configPostDownArray.forEach((PostDown) => {
-    configPostDown = configPostDown + `PostDown = ${PostDown}\n`;
-  });
-
-  const config =
-    configPrivateKey + configAddress + configListenPort + configPostUp + configPostDown;
+  const config = configPublicKey + configPresharedKey + configAllowedIPs;
   return title + data + type + config.trim();
 }
 

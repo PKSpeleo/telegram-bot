@@ -12,7 +12,7 @@ interface ConfigWithAdditionalData {
 interface InterfaceConfig {
   title: string;
   type: string;
-  data: {
+  data?: {
     lastUpdate?: string;
   };
   config: {
@@ -53,7 +53,7 @@ export function parseWireguardConfig(wireguardConfigString: string): WireguardCo
 
   const extractedInterface: ConfigWithAdditionalData =
     extractConfigAndAdditionalInformation(interfaceString);
-  //TODO finish it
+
   const parsedInterfaceData = parseTypicalConfig(extractedInterface.data);
   const parsedInterfaceConfig = parseTypicalConfig(extractedInterface.config);
 
@@ -83,7 +83,7 @@ export function parseWireguardConfig(wireguardConfigString: string): WireguardCo
     title: extractedInterface.title,
     type: extractedInterface.type,
     data: {
-      lastUpdate: ''
+      lastUpdate: parsedInterfaceData.lastUpdate
     },
     config: {
       PrivateKey: parsedInterfaceConfig.PrivateKey || '',

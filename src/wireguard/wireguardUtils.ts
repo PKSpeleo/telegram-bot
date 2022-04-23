@@ -9,35 +9,43 @@ interface ConfigWithAdditionalData {
   data: string;
 }
 
+interface InterfaceDataConfig {
+  lastUpdate?: string;
+}
+
+interface InterfaceConfigConfig {
+  PrivateKey: string;
+  Address: string;
+  ListenPort: string;
+  PostUp: string;
+  PostDown: string;
+}
+
 interface InterfaceConfig {
   title: string;
   type: string;
-  data?: {
-    lastUpdate?: string;
-  };
-  config: {
-    PrivateKey: string;
-    Address: string;
-    ListenPort: string;
-    PostUp: string;
-    PostDown: string;
-  };
+  data?: InterfaceDataConfig;
+  config: InterfaceConfigConfig;
+}
+
+interface PeerDataConfig {
+  userId?: string;
+  userName?: string;
+  firstName?: string;
+  lastName?: string;
+}
+
+interface PeerConfigConfig {
+  PublicKey: string;
+  PresharedKey: string;
+  AllowedIPs: string;
 }
 
 interface PeerConfig {
   title: string;
   type: string;
-  data?: {
-    userId?: string;
-    userName?: string;
-    firstName?: string;
-    lastName?: string;
-  };
-  config: {
-    PublicKey: string;
-    PresharedKey: string;
-    AllowedIPs: string;
-  };
+  data?: PeerDataConfig;
+  config: PeerConfigConfig;
 }
 
 interface WireguardConfig {
@@ -100,6 +108,45 @@ export function parseWireguardConfig(wireguardConfigString: string): WireguardCo
   };
 }
 
+export function serializeWireguardConfig(parsedConfig: WireguardConfig): string {
+  return '';
+}
+
+export function serializeInterface(parsedConfig: InterfaceConfig): string {
+  const title = `### ${parsedConfig.title}\n`;
+  let data = ``;
+  if (parsedConfig.data?.lastUpdate) {
+    data = `# lastUpdate = ${parsedConfig.data?.lastUpdate}\n`;
+  }
+  const type = `${parsedConfig.type}\n`;
+
+  const configPrivateKey = `PrivateKey = ${parsedConfig.config.PrivateKey}\n`;
+
+  let configAddress = '';
+  const configAddressArray = parsedConfig.config.Address.split(',');
+  configAddressArray.forEach((address) => {
+    configAddress = configAddress + `Address = ${address}\n`;
+  });
+
+  const configListenPort = `ListenPort = ${parsedConfig.config.ListenPort}\n`;
+
+  let configPostUp = '';
+  const configPostUpArray = parsedConfig.config.PostUp.split(',');
+  configPostUpArray.forEach((PostUp) => {
+    configPostUp = configPostUp + `PostUp = ${PostUp}\n`;
+  });
+
+  let configPostDown = '';
+  const configPostDownArray = parsedConfig.config.PostDown.split(',');
+  configPostDownArray.forEach((PostDown) => {
+    configPostDown = configPostDown + `PostDown = ${PostDown}\n`;
+  });
+
+  const config =
+    configPrivateKey + configAddress + configListenPort + configPostUp + configPostDown;
+  return title + data + type + config;
+}
+
 export function parseTypicalConfig(interfaceConfigString: string) {
   const strings = interfaceConfigString.split(/\r?\n/);
   const obj: DynamicObject = {};
@@ -135,9 +182,4 @@ export function extractConfigAndAdditionalInformation(input: string): ConfigWith
     data,
     config
   };
-}
-
-export function serializeWireguardConfig() {
-  const wgObject = {};
-  return wgObject;
 }

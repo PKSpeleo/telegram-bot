@@ -8,7 +8,7 @@ import {
   serializePeer,
   serializeWireguardConfig,
   WireguardConfig
-} from './wireguardUtils';
+} from './wireguardConfigUtils';
 
 //TODO please refactor me ;)
 describe('wireguardUtils', () => {

@@ -7,7 +7,7 @@ It must have a lot of nice features, soon ;)
 Work in progress...
 
 By the way!
-[Here](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardUtils.ts) you can find my Wireguard Config File Parser and Serializer on TypeScrip with tests;)
+[Here](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardConfigUtils.ts) you can find my Wireguard Config File Parser and Serializer on TypeScrip with tests;)
 
 ## What I want to do:
 - [x] Support different bots (server_1, server_2, dev) in one repo.
@@ -25,7 +25,7 @@ By the way!
 
 ### Known problems
 - [ ] Figure out with wired behaviour when admin post and call /commands in Channels comments (works fine for users)
-- [ ] Need to refactor monster [Wireguard Config File Parser and Serializer](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardUtils.ts)
+- [ ] Need to refactor monster [Wireguard Config File Parser and Serializer](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardConfigUtils.ts)
 
 ## Preparation.
 This BOT supposed to bi started on VPS servers with Ubuntu 20.

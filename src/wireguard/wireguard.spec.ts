@@ -1,4 +1,4 @@
-import { generateKeys, getConfig, writeConfig } from './wireguard';
+import { generateKeys, getConfig, getConfigFile, writeConfig } from './wireguard';
 import { readFile, writeFile } from 'fs/promises';
 import { fs, vol } from 'memfs';
 import { mockedConfig, parsedConfig } from './wireguardConfigUtils.spec';
@@ -26,6 +26,15 @@ describe('Wireguard', () => {
   test('getConfig', async () => {
     const res = await getConfig();
     expect(res).toEqual(parsedConfig);
+  });
+
+  test('getConfigFile', async () => {
+    const res = await getConfigFile();
+    expect(res).toEqual({
+      content: mockedConfig,
+      fileName: 'wg0.conf',
+      filePath: '/etc/wireguard/wg0.conf'
+    });
   });
 
   test('writeConfig', async () => {

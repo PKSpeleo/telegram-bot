@@ -11,7 +11,7 @@ import {
 } from './wireguardConfigUtils';
 
 //TODO please refactor me ;)
-describe('wireguardUtils', () => {
+describe('wireguardConfigUtils', () => {
   describe('Parsing', () => {
     describe('parseWireguardConfig', () => {
       test('should parse config', () => {

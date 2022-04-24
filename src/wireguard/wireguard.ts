@@ -13,9 +13,17 @@ interface Keys {
   PresharedKey: string;
 }
 
+export interface GetConfigFile {
+  content: string;
+  fileName: string;
+  filePath: string;
+}
+
 const WG_PATH = '/etc/wireguard';
 const WG_CONFIG = 'wg0.conf';
 
+// Do not use this functions directly!
+// Use WireguardBotAdapter with queue inside.
 export async function getConfig(): Promise<WireguardConfig> {
   const configFilePath = path.join(WG_PATH, WG_CONFIG);
   const configString = await readFile(configFilePath, 'utf8').catch((err) => {
@@ -36,6 +44,22 @@ export async function writeConfig(configObject: WireguardConfig): Promise<void> 
     //TODO add to log file
     console.log('Error during file writing', err);
   });
+}
+
+export async function getConfigFile(): Promise<GetConfigFile> {
+  const configFilePath = path.join(WG_PATH, WG_CONFIG);
+  const configString = await readFile(configFilePath, 'utf8').catch((err) => {
+    //TODO add to log file
+    console.log('Error during file reading', err);
+  });
+  if (!configString || configString == '') {
+    throw new Error('Empty config file');
+  }
+  return {
+    content: configString,
+    fileName: WG_CONFIG,
+    filePath: configFilePath
+  };
 }
 
 export async function generateKeys(): Promise<Keys> {

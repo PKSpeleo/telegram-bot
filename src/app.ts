@@ -2,8 +2,10 @@ import { startBot } from './bot/bot';
 import { extractEnv } from './utils/extractEnv';
 import { Logger } from './utils/logger';
 import chalk from "chalk";
+import {WireguardBotAdapter} from "./wireguard/wireguardBotAdapter";
 
 const logger = new Logger();
+export const wg = new WireguardBotAdapter();
 const botProperties = extractEnv();
 
 logger.logToConsole(`🤖️ Starting version ${botProperties.VERSION} ${botProperties.NAME}`);

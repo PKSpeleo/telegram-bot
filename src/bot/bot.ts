@@ -10,6 +10,7 @@ import { logDebugInfoToConsole, stringifyDebugDate } from './shared/debug';
 import { sendMessagesToBosses } from './shared/boss';
 import { Logger } from '../utils/logger';
 import { reactOnLogCommand } from './commands/log';
+import { getConfigFile } from './commands/getConfigFile';
 
 export async function startBot(botProperties: BotProperties, logger: Logger) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
@@ -48,6 +49,12 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     reactOnLogCommand(ctx, botProperties, logger);
+  });
+
+  bot.command('getConfigFile', async (ctx) => {
+    logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
+    getConfigFile(ctx, botProperties, logger);
   });
 
   bot.command('quit', async (ctx) => {

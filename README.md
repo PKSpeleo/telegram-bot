@@ -26,6 +26,7 @@ By the way!
 ### Known problems
 - [ ] Figure out with wired behaviour when admin post and call /commands in Channels comments (works fine for users)
 - [ ] Need to refactor monster [Wireguard Config File Parser and Serializer](https://github.com/PKSpeleo/telegram-bot/blob/master/src/wireguard/wireguardConfigUtils.ts)
+- [ ] Get rid of tests based on real commands and filesystem 
 
 ## Preparation.
 This BOT supposed to bi started on VPS servers with Ubuntu 20.

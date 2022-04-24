@@ -50,9 +50,24 @@ interface PeerConfig {
   config: PeerConfigConfig;
 }
 
-interface WireguardConfig {
+export interface WireguardConfig {
   interface: InterfaceConfig;
   peers: PeerConfig[];
+}
+
+export interface ClientConfig {
+  interface: {
+    type: string;
+    PrivateKey: string;
+    Address: string;
+  };
+  peer: {
+    type: string;
+    PublicKey: string;
+    PresharedKey: string;
+    Endpoint: string;
+    AllowedIPs: string;
+  };
 }
 //TODO please refactor me ;)
 //TODO add keepalive and DNS for peer or server
@@ -235,4 +250,38 @@ export function extractConfigAndAdditionalInformation(input: string): ConfigWith
     data,
     config
   };
+}
+
+export function serializeClientConfig(config: ClientConfig): string {
+  const serializedInterface = `${config.interface.type}\n`;
+  const serializedPrivateKey = `PrivateKey = ${config.interface.PrivateKey}\n`;
+
+  let serializedAddress = '';
+  const serializedAddressArray = config.interface.Address.split(',');
+  serializedAddressArray.forEach((address) => {
+    serializedAddress = serializedAddress + `Address = ${address}\n`;
+  });
+
+  const serializedPeer = `${config.peer.type}\n`;
+  const serializedPublicKey = `PublicKey = ${config.peer.PublicKey}\n`;
+  const serializedPresharedKey = `PresharedKey = ${config.peer.PresharedKey}\n`;
+  const serializedEndpoint = `Endpoint = ${config.peer.Endpoint}\n`;
+
+  let serializedAllowedIPs = '';
+  const serializedAllowedIPsArray = config.peer.AllowedIPs.split(',');
+  serializedAllowedIPsArray.forEach((address) => {
+    serializedAllowedIPs = serializedAllowedIPs + `AllowedIPs = ${address}\n`;
+  });
+
+  const output =
+    serializedInterface +
+    serializedPrivateKey +
+    serializedAddress +
+    '\n' +
+    serializedPeer +
+    serializedPublicKey +
+    serializedPresharedKey +
+    serializedEndpoint +
+    serializedAllowedIPs.trim();
+  return output;
 }

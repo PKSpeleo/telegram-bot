@@ -1,10 +1,13 @@
 import {
+  ClientConfig,
   extractConfigAndAdditionalInformation,
   parseTypicalConfig,
   parseWireguardConfig,
+  serializeClientConfig,
   serializeInterface,
   serializePeer,
-  serializeWireguardConfig
+  serializeWireguardConfig,
+  WireguardConfig
 } from './wireguardUtils';
 
 //TODO please refactor me ;)
@@ -74,6 +77,13 @@ describe('wireguardUtils', () => {
       test('should create correct peer config from object', () => {
         const result = serializePeer(parsedPeerConfig);
         expect(result).toEqual(serializedPeerConfig);
+      });
+    });
+
+    describe('serializeClientConfig', () => {
+      test('should create correct client config from object', () => {
+        const result = serializeClientConfig(parsedClientConfig);
+        expect(result).toEqual(serializedClientConfig);
       });
     });
   });
@@ -246,7 +256,7 @@ AllowedIPs = fd42:42:42::5/128
 
 `;
 
-const parsedConfig = {
+const parsedConfig: WireguardConfig = {
   interface: {
     config: {
       Address: '10.66.66.1/24,fd42:42:42::1/64',
@@ -385,3 +395,30 @@ PublicKey = dsfjsfjaslkdjfoajsdf jasfjlasjdfl;j asldjf lajsdf
 PresharedKey = asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf
 AllowedIPs = 10.66.66.2/32
 AllowedIPs = fd42:42:42::2/128`;
+
+const serializedClientConfig = `[Interface]
+PrivateKey = aiupououyuiyiuyom,nm,nbkjjkhgklg
+Address = 10.66.66.24/32
+Address = fd42:42:42::24/128
+
+[Peer]
+PublicKey = nmbvcnmbvnmm,bvnm,bvghjbnmvm
+PresharedKey = gkghgjhgjkgkjhgkgkjghkjgkjgjkgjkgh
+Endpoint = 1.1.1.1:76542
+AllowedIPs = 0.0.0.0/0
+AllowedIPs = ::/0`;
+
+const parsedClientConfig: ClientConfig = {
+  interface: {
+    type: `[Interface]`,
+    PrivateKey: `aiupououyuiyiuyom,nm,nbkjjkhgklg`,
+    Address: `10.66.66.24/32,fd42:42:42::24/128`
+  },
+  peer: {
+    type: `[Peer]`,
+    PublicKey: `nmbvcnmbvnmm,bvnm,bvghjbnmvm`,
+    PresharedKey: `gkghgjhgjkgkjhgkgkjghkjgkjgjkgjkgh`,
+    Endpoint: `1.1.1.1:76542`,
+    AllowedIPs: `0.0.0.0/0,::/0`
+  }
+};

@@ -69,6 +69,11 @@ export interface ClientConfig {
     AllowedIPs: string;
   };
 }
+
+interface IPBases {
+  v4: string;
+  v6?: string;
+}
 //TODO please refactor me ;)
 //TODO add keepalive and DNS for peer or server
 export function parseWireguardConfig(wireguardConfigString: string): WireguardConfig {
@@ -284,4 +289,47 @@ export function serializeClientConfig(config: ClientConfig): string {
     serializedEndpoint +
     serializedAllowedIPs.trim();
   return output;
+}
+
+//TODO v6 without v4 not supported. De we need v6 separately?
+export function extractIpBases(ipString: string): IPBases {
+  const ipArray = ipString.split(',');
+  let serverIpV4;
+  let serverIpV6;
+  switch (ipArray.length) {
+    case 1:
+      if (ipArray[0].includes(':')) {
+        serverIpV6 = ipArray[0];
+      } else {
+        serverIpV4 = ipArray[0];
+      }
+      break;
+    case 2:
+      if (ipArray[0].includes(':')) {
+        serverIpV6 = ipArray[0];
+        serverIpV4 = ipArray[1];
+      } else {
+        serverIpV4 = ipArray[0];
+        serverIpV6 = ipArray[1];
+      }
+      break;
+    default:
+      throw new Error('No IPs found or too many!');
+  }
+
+  const baseIpV4 = serverIpV4?.slice(0, serverIpV4.lastIndexOf('.') + 1);
+  const baseIpV6 = serverIpV6?.slice(0, serverIpV6.lastIndexOf(':') + 1);
+
+  if (!baseIpV4) {
+    throw new Error('No ipV4 found');
+  }
+
+  const returnValue: IPBases = {
+    v4: baseIpV4
+  };
+  if (baseIpV6) {
+    returnValue.v6 = baseIpV6;
+  }
+
+  return returnValue;
 }

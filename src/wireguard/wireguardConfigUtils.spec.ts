@@ -1,6 +1,7 @@
 import {
   ClientConfig,
   extractConfigAndAdditionalInformation,
+  extractIpBases,
   parseTypicalConfig,
   parseWireguardConfig,
   serializeClientConfig,
@@ -9,6 +10,7 @@ import {
   serializeWireguardConfig,
   WireguardConfig
 } from './wireguardConfigUtils';
+import any = jasmine.any;
 
 //TODO please refactor me ;)
 describe('wireguardConfigUtils', () => {
@@ -85,6 +87,37 @@ describe('wireguardConfigUtils', () => {
         const result = serializeClientConfig(parsedClientConfig);
         expect(result).toEqual(serializedClientConfig);
       });
+    });
+  });
+
+  describe('extractIpBases', () => {
+    test('should extract v4 and v6 bases', () => {
+      const result = extractIpBases('10.66.66.1/24,fd42:42:42::1/64');
+      expect(result).toEqual({ v4: '10.66.66.', v6: 'fd42:42:42::' });
+    });
+
+    test('should extract v6 and v4 bases', () => {
+      const result = extractIpBases('fd42:42:42::1/64,10.66.66.1/24');
+      expect(result).toEqual({ v4: '10.66.66.', v6: 'fd42:42:42::' });
+    });
+
+    test('should extract v4 only', () => {
+      const result = extractIpBases('10.66.66.1/24');
+      expect(result).toEqual({ v4: '10.66.66.' });
+    });
+
+    test('should NOT extract v6 only', () => {
+      const func = () => {
+        extractIpBases('fd42:42:42::1/64');
+      };
+      expect(func).toThrowError('No ipV4 found');
+    });
+
+    test('should throw an error if to many ips', () => {
+      const func = () => {
+        extractIpBases('10.66.66.1/24,fd42:42:42::1/64,10.66.66.1/24,fd42:42:42::1/64');
+      };
+      expect(func).toThrowError('No IPs found or too many!');
     });
   });
 });

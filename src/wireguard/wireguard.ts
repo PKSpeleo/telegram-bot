@@ -80,3 +80,11 @@ export async function generatePubKey(privatKey: string): Promise<string> {
   });
   return publicKey;
 }
+
+//TODO replace. not possible to test - linux command
+export async function getServerIpV4(privatKey: string): Promise<string> {
+  const serverIpV4 = await execChildProcess(`ip -4 addr | sed -ne 's|^.* inet \\([^/]*\\)/.* scope global.*$|\\1|p' | awk '{print $1}' | head -1`).catch((err) => {
+    throw new Error('Error during server ip v4 extraction');
+  });
+  return serverIpV4;
+}

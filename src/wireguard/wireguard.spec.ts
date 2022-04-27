@@ -4,11 +4,17 @@ import {
   generatePubKey,
   getConfig,
   getConfigFile,
+  writeClientConfig,
   writeConfig
 } from './wireguard';
-import { readFile, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import { fs, vol } from 'memfs';
-import { mockedConfig, parsedConfig } from './wireguardConfigUtils.spec';
+import {
+  mockedConfig,
+  parsedClientConfig,
+  parsedConfig,
+  serializedClientConfig
+} from './wireguardConfigUtils.spec';
 
 jest.mock('fs/promises');
 
@@ -16,6 +22,7 @@ describe('Wireguard', () => {
   beforeEach(() => {
     (readFile as jest.Mock).mockImplementation(fs.promises.readFile);
     (writeFile as jest.Mock).mockImplementation(fs.promises.writeFile);
+    (mkdir as jest.Mock).mockImplementation(fs.promises.mkdir);
 
     const json = {
       '/etc/wireguard/wg0.conf': mockedConfig
@@ -65,5 +72,19 @@ describe('Wireguard', () => {
   test('generateClientFileName', async () => {
     const res = generateClientFileName('NLLLLLLL', 1234567890, 1);
     expect(res).toEqual('NL_1234567890_1');
+  });
+
+  test('writeClientConfig', async () => {
+    const res = await writeClientConfig(parsedClientConfig, 'test_name.conf');
+
+    expect(await fs.promises.readFile('/etc/wireguard/users/test_name.conf', 'utf8')).toEqual(
+      serializedClientConfig
+    );
+
+    expect(res).toEqual({
+      content: serializedClientConfig,
+      fileName: 'test_name.conf',
+      filePath: '/etc/wireguard/users/test_name.conf'
+    });
   });
 });

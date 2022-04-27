@@ -1,12 +1,13 @@
 import { execChildProcess } from '../utils/cmd';
 import {
+  ClientConfig,
   parseWireguardConfig,
+  serializeClientConfig,
   serializeWireguardConfig,
   WireguardConfig
 } from './wireguardConfigUtils';
-import { readFile, writeFile } from 'fs/promises';
+import { mkdir, readFile, writeFile } from 'fs/promises';
 import path from 'path';
-import { throws } from 'assert';
 
 interface Keys {
   PrivateKey: string;
@@ -93,15 +94,37 @@ export async function getServerIpV4(privatKey: string): Promise<string> {
   // return serverIpV4;
 }
 
+// names longer then 15 symbols not supported!
 export function generateClientFileName(
   serverName: string,
   userTgId: number,
   index: number
 ): string {
-  const shortServerName = serverName.slice(0,2);
+  const shortServerName = serverName.slice(0, 2);
   const res = shortServerName + '_' + userTgId.toString() + '_' + index.toString();
   if (res.length > 15) {
-    throw new Error('Too long Client file name!')
+    throw new Error('Too long Client file name!');
   }
   return res;
 }
+
+export async function writeClientConfig(
+  configObject: ClientConfig,
+  fileName: string
+): Promise<GetConfigFile> {
+  const configFilePath = path.join(WG_PATH, WG_USERS_PATH, fileName);
+  const serializedConfig = serializeClientConfig(configObject);
+  await mkdir(path.join(WG_PATH, WG_USERS_PATH));
+  await writeFile(configFilePath, serializedConfig).catch((err) => {
+    //TODO add to log file
+    console.log('Error during file writing', err);
+  });
+
+  return {
+    fileName: fileName,
+    filePath: configFilePath,
+    content: serializedConfig
+  };
+}
+
+//TODO get config index function

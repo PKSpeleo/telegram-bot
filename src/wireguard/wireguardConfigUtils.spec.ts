@@ -504,7 +504,7 @@ PresharedKey = asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf
 AllowedIPs = 10.66.66.2/32
 AllowedIPs = fd42:42:42::2/128`;
 
-const serializedClientConfig = `[Interface]
+export const serializedClientConfig = `[Interface]
 PrivateKey = aiupououyuiyiuyom,nm,nbkjjkhgklg
 Address = 10.66.66.24/32
 Address = fd42:42:42::24/128
@@ -516,7 +516,7 @@ Endpoint = 1.1.1.1:76542
 AllowedIPs = 0.0.0.0/0
 AllowedIPs = ::/0`;
 
-const parsedClientConfig: ClientConfig = {
+export const parsedClientConfig: ClientConfig = {
   interface: {
     type: `[Interface]`,
     PrivateKey: `aiupououyuiyiuyom,nm,nbkjjkhgklg`,

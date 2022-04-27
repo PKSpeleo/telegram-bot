@@ -21,6 +21,7 @@ export interface GetConfigFile {
 }
 
 const WG_PATH = '/etc/wireguard';
+const WG_USERS_PATH = 'users';
 const WG_CONFIG = 'wg0.conf';
 
 // Do not use this functions directly!
@@ -81,10 +82,26 @@ export async function generatePubKey(privatKey: string): Promise<string> {
   return publicKey;
 }
 
-//TODO replace. not possible to test - linux command
+//TODO replace. difficult to test - linux command (brew install iproute2mac not help) Not covered by tests!!!
 export async function getServerIpV4(privatKey: string): Promise<string> {
-  const serverIpV4 = await execChildProcess(`ip -4 addr | sed -ne 's|^.* inet \\([^/]*\\)/.* scope global.*$|\\1|p' | awk '{print $1}' | head -1`).catch((err) => {
+  const serverIpV4 = await execChildProcess(
+    `ip -4 addr | sed -ne 's|^.* inet \\([^/]*\\)/.* scope global.*$|\\1|p' | awk '{print $1}' | head -1`
+  ).catch((err) => {
     throw new Error('Error during server ip v4 extraction');
   });
-  return serverIpV4;
+  return '1.1.1.1';
+  // return serverIpV4;
+}
+
+export function generateClientFileName(
+  serverName: string,
+  userTgId: number,
+  index: number
+): string {
+  const shortServerName = serverName.slice(0,2);
+  const res = shortServerName + '_' + userTgId.toString() + '_' + index.toString();
+  if (res.length > 15) {
+    throw new Error('Too long Client file name!')
+  }
+  return res;
 }

@@ -1,4 +1,11 @@
-import { generateKeys, generatePubKey, getConfig, getConfigFile, writeConfig } from './wireguard';
+import {
+  generateClientFileName,
+  generateKeys,
+  generatePubKey,
+  getConfig,
+  getConfigFile,
+  writeConfig
+} from './wireguard';
 import { readFile, writeFile } from 'fs/promises';
 import { fs, vol } from 'memfs';
 import { mockedConfig, parsedConfig } from './wireguardConfigUtils.spec';
@@ -53,5 +60,10 @@ describe('Wireguard', () => {
     await writeConfig(parsedConfig);
 
     expect(await fs.promises.readFile('/etc/wireguard/wg0.conf', 'utf8')).toEqual(mockedConfig);
+  });
+
+  test('generateClientFileName', async () => {
+    const res = generateClientFileName('NLLLLLLL', 1234567890, 1);
+    expect(res).toEqual('NL_1234567890_1');
   });
 });

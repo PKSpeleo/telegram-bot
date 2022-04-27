@@ -333,3 +333,48 @@ export function extractIpBases(ipString: string): IPBases {
 
   return returnValue;
 }
+
+export function findFirstFreeAddress(peers: PeerConfig[]): string {
+  const arrayOfAddresses = peers.map((peer) => {
+    const addressString = peer.config.AllowedIPs;
+    const ipArray = addressString.split(',');
+    let serverIpV4;
+    let serverIpV6;
+    switch (ipArray.length) {
+      case 1:
+        if (ipArray[0].includes(':')) {
+          serverIpV6 = ipArray[0];
+        } else {
+          serverIpV4 = ipArray[0];
+        }
+        break;
+      case 2:
+        if (ipArray[0].includes(':')) {
+          serverIpV6 = ipArray[0];
+          serverIpV4 = ipArray[1];
+        } else {
+          serverIpV4 = ipArray[0];
+          serverIpV6 = ipArray[1];
+        }
+        break;
+      default:
+        throw new Error('No IPs found or too many!');
+    }
+    const endingOfIpV4 = serverIpV4?.slice(
+      serverIpV4.lastIndexOf('.') + 1,
+      serverIpV4.lastIndexOf('/')
+    );
+    return Number(endingOfIpV4);
+  });
+  let freeIpNumber;
+  for (let i = 2; i < 255; i++) {
+    if (!arrayOfAddresses.includes(i)) {
+      freeIpNumber = i;
+      break;
+    }
+  }
+  if (!freeIpNumber) {
+    throw new Error('Maximum number of clients reached.');
+  }
+  return freeIpNumber.toString();
+}

@@ -1,5 +1,6 @@
 import {
   ClientConfig,
+  countSameUsersIds,
   extractConfigAndAdditionalInformation,
   extractIpBases,
   findFirstFreeAddress,
@@ -11,7 +12,6 @@ import {
   serializeWireguardConfig,
   WireguardConfig
 } from './wireguardConfigUtils';
-import any = jasmine.any;
 
 //TODO please refactor me ;)
 describe('wireguardConfigUtils', () => {
@@ -131,6 +131,23 @@ describe('wireguardConfigUtils', () => {
     test('should find free ip in the middle', () => {
       const result = findFirstFreeAddress(parsedConfigWithoutThird.peers);
       expect(result).toEqual('3');
+    });
+  });
+
+  describe('countSameUsersIds', () => {
+    test('should find 0 users', () => {
+      const result = countSameUsersIds(parsedConfigWithoutThird.peers, 333);
+      expect(result).toEqual(0);
+    });
+
+    test('should find 1 users', () => {
+      const result = countSameUsersIds(parsedConfigWithoutThird.peers, 111);
+      expect(result).toEqual(1);
+    });
+
+    test('should find 2 users', () => {
+      const result = countSameUsersIds(parsedConfigWithoutThird.peers, 222);
+      expect(result).toEqual(2);
     });
   });
 });
@@ -404,7 +421,7 @@ export const parsedConfigWithoutThird: WireguardConfig = {
         firstName: 'la-la-tru-2',
         lastName: 'last name',
         userName: 'tru-la-la-1',
-        userId: '23123123123',
+        userId: '222',
         lastUpdate: '22-10-2022 23:32 (+0)',
         fileName: 'nl2_123456789_1'
       },
@@ -419,7 +436,8 @@ export const parsedConfigWithoutThird: WireguardConfig = {
       },
       data: {
         firstName: 'la-la-tru-6',
-        userName: 'tru-la-la-5'
+        userName: 'tru-la-la-5',
+        userId: '111'
       },
       title: 'Client NL_LV_Phone',
       type: '[Peer]'
@@ -430,13 +448,14 @@ export const parsedConfigWithoutThird: WireguardConfig = {
         PresharedKey: 'aklsjdfklasdasfhahshlflasjhfafs',
         PublicKey: 'dsfjhiueorpwtjkghiuopfjaklsgdhioutpwjerklghsdfi'
       },
-      data: {},
+      data: {
+        userId: '222'
+      },
       title: 'Client NL_KS_Win',
       type: '[Peer]'
     }
   ]
 };
-
 
 const parsedInterfaceConfig = {
   config: {

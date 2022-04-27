@@ -126,5 +126,3 @@ export async function writeClientConfig(
     content: serializedConfig
   };
 }
-
-//TODO get config index function

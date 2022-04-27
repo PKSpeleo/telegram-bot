@@ -378,3 +378,8 @@ export function findFirstFreeAddress(peers: PeerConfig[]): string {
   }
   return freeIpNumber.toString();
 }
+
+export function countSameUsersIds(peers: PeerConfig[], userId: number): number {
+  const peersTimes = peers.filter((peer) => peer.data?.userId === userId.toString());
+  return peersTimes.length;
+}

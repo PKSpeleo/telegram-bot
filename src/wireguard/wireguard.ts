@@ -6,6 +6,7 @@ import {
 } from './wireguardConfigUtils';
 import { readFile, writeFile } from 'fs/promises';
 import path from 'path';
+import { throws } from 'assert';
 
 interface Keys {
   PrivateKey: string;
@@ -71,4 +72,11 @@ export async function generateKeys(): Promise<Keys> {
     PublicKey: publicKey,
     PresharedKey: preSharedKey
   };
+}
+
+export async function generatePubKey(privatKey: string): Promise<string> {
+  const publicKey = await execChildProcess(`echo ${privatKey} | wg pubkey`).catch((err) => {
+    throw new Error('Error during pubKey generation');
+  });
+  return publicKey;
 }

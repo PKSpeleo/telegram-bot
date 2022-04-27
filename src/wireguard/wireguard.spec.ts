@@ -1,4 +1,4 @@
-import { generateKeys, getConfig, getConfigFile, writeConfig } from './wireguard';
+import { generateKeys, generatePubKey, getConfig, getConfigFile, writeConfig } from './wireguard';
 import { readFile, writeFile } from 'fs/promises';
 import { fs, vol } from 'memfs';
 import { mockedConfig, parsedConfig } from './wireguardConfigUtils.spec';
@@ -21,6 +21,11 @@ describe('Wireguard', () => {
     expect(result.PublicKey.length).toEqual(44);
     expect(result.PresharedKey.length).toEqual(44);
     expect(result.PrivateKey.length).toEqual(44);
+  });
+
+  test('generatePubKey', async () => {
+    const result = await generatePubKey('VEILqrzP5Cg60khTnLSlapFDKewcsiAznJhSoF8QTS8=');
+    expect(result).toEqual('x5Nmp1rqxgKk4PdVNPhNvjqM3C4VEkpSfyZSEQYZE30=');
   });
 
   test('getConfig', async () => {

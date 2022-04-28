@@ -29,6 +29,7 @@ export function extractEnv(): BotProperties {
     SUPPORTED_CHAT_ID:
       convertStringsArrayToNumbersArray(currentBotSettingsObj.SUPPORTED_CHAT_ID) || [],
     DEBUG: isDebug,
+    SERVER_IP: currentBotSettingsObj.SERVER_IP,
     VERSION: packageJSONFile.version || 'Missing!',
     NAME: currentBotSettingsObj.NAME || ''
   };

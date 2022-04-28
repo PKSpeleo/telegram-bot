@@ -83,17 +83,6 @@ export async function generatePubKey(privatKey: string): Promise<string> {
   return publicKey;
 }
 
-//TODO replace. difficult to test - linux command (brew install iproute2mac not help) Not covered by tests!!!
-export async function getServerIpV4(privatKey: string): Promise<string> {
-  const serverIpV4 = await execChildProcess(
-    `ip -4 addr | sed -ne 's|^.* inet \\([^/]*\\)/.* scope global.*$|\\1|p' | awk '{print $1}' | head -1`
-  ).catch((err) => {
-    throw new Error('Error during server ip v4 extraction');
-  });
-  return '1.1.1.1';
-  // return serverIpV4;
-}
-
 // names longer then 15 symbols not supported!
 export function generateClientFileName(
   serverName: string,

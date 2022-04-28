@@ -16,6 +16,7 @@ export interface BotProperties {
   SERVER_FOR_PING: ServerForPing[];
   ADMIN_ID: number[];
   SUPPORTED_CHAT_ID: number[];
+  SERVER_IP: string;
   DEBUG?: boolean;
   VERSION?: string;
   URL?: string;

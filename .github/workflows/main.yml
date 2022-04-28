@@ -62,6 +62,6 @@ jobs:
       - name: Deploy NL_OLD env
         run: scp -P ${{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_OLD_IP }}:/root/telegram-bot'
       - name: Deploy NL_OLD app
-        run: scp -P ${{ secrets.VPS_NL_OLD_PORT }} ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_OLD_IP }}:/root/telegram-bot'
+        run: scp -P ${{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_OLD_IP }}:/root/telegram-bot'
 
 

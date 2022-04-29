@@ -90,8 +90,8 @@ export async function generatePubKey(privatKey: string): Promise<string> {
   return publicKey;
 }
 export async function syncConfig(): Promise<void> {
-  const publicKey = await execChildProcess(`wg syncconf wg0 <(wg-quick strip wg0)`).catch((err) => {
-    throw new Error('Error during cong syncing.');
+  await execChildProcess(`wg syncconf wg0 <(wg-quick strip wg0)`).catch((err) => {
+    throw new Error('Error during conf syncing.');
   });
 }
 
@@ -130,6 +130,7 @@ export async function writeClientConfig(
 }
 
 //TODO cover by tests
+//TODO Revert all changes if failed
 export async function addClient(
   clientData: PeerDataConfig,
   serverIp: string,

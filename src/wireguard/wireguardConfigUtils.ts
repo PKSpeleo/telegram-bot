@@ -76,6 +76,8 @@ interface IPBases {
 }
 //TODO please refactor me ;)
 //TODO add keepalive and DNS for peer or server
+//TODO bug is config file begins not from ###
+//TODO ADD DNS by default to sever from bot config - env
 export function parseWireguardConfig(wireguardConfigString: string): WireguardConfig {
   const commentedParts = wireguardConfigString.split(/(?=###)/g);
   const interfaceString = commentedParts[0].trim();

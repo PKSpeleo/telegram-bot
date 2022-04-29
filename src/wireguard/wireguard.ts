@@ -90,8 +90,11 @@ export async function generatePubKey(privatKey: string): Promise<string> {
   return publicKey;
 }
 export async function syncConfig(): Promise<void> {
-  await execChildProcess(`wg syncconf "wg0" <(wg-quick strip "wg0")`).catch((err) => {
-    throw new Error('Error during conf syncing.');
+  const tempConf = await execChildProcess('wg-quick strip "wg0"').catch((err) => {
+    throw new Error(`Error during conf pre syncing. ${err}`);
+  });
+  await execChildProcess(`wg syncconf "wg0" < ${tempConf}`).catch((err) => {
+    throw new Error(`Error during conf syncing. ${err}`);
   });
 }
 

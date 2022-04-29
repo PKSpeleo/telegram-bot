@@ -101,7 +101,7 @@ export function generateClientFileName(
   if (res.length > 15) {
     throw new Error('Too long Client file name!');
   }
-  return res;
+  return res + '.conf';
 }
 
 //TODO decide what to do if client was deleted from config but client config exist. Right now it is overwritten and existing file will be lost. Reproduce: add 3 times, manually remove middle peer from config, but keep file, add another one client - third file will be overwritten, but not valid - second.

@@ -71,7 +71,7 @@ describe('Wireguard', () => {
 
   test('generateClientFileName', async () => {
     const res = generateClientFileName('NLLLLLLL', 1234567890, 1);
-    expect(res).toEqual('NL_1234567890_2');
+    expect(res).toEqual('NL_1234567890_2.conf');
   });
 
   test('writeClientConfig', async () => {

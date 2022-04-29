@@ -188,7 +188,7 @@ export async function addClient(
   wgConfigObject.peers.push(dataForServerConfigUpdate);
   await writeConfig(wgConfigObject);
 
-  // await syncConfig();
+  await syncConfig();
 
   return {
     content: clientConfigFile.content,

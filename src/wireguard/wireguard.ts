@@ -85,6 +85,7 @@ export async function generateKeys(): Promise<Keys> {
 
 export async function generatePubKey(privatKey: string): Promise<string> {
   const publicKey = await execChildProcess(`echo ${privatKey} | wg pubkey`).catch((err) => {
+    console.log('Priv: ', privatKey);
     throw new Error('Error during pubKey generation');
   });
   return publicKey;

@@ -28,7 +28,7 @@ interface InterfaceConfig {
   config: InterfaceConfigConfig;
 }
 
-interface PeerDataConfig {
+export interface PeerDataConfig {
   userId?: string;
   userName?: string;
   firstName?: string;
@@ -43,7 +43,7 @@ interface PeerConfigConfig {
   AllowedIPs: string;
 }
 
-interface PeerConfig {
+export interface PeerConfig {
   title: string;
   type: string;
   data?: PeerDataConfig;

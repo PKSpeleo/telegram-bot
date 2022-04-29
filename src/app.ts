@@ -17,6 +17,7 @@ BOT Token: ${botProperties.TOKEN}
 Server for ping: ${JSON.stringify(botProperties.SERVER_FOR_PING)}
 Admins ID: ${botProperties.ADMIN_ID}
 Supported chat ID: ${botProperties.SUPPORTED_CHAT_ID}
+Server IP Address: ${botProperties.SERVER_IP}
 Debug mode: ${chalk.yellow(botProperties.DEBUG)}
 Version: ${botProperties.VERSION}`,
   'debug'

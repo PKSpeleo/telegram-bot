@@ -8,8 +8,9 @@ Work in progress...
 
 ## ATTENTION!
 Telegram Chat ID can be changed if 
-- Change type of the Group from Private to Public
+- Changed type of the Group from Private to Public
 - Switched on History visibility for new users
+
 Looks like Chat id can be changed only once - from short to long, and then it will stay long without changes.  
 
 

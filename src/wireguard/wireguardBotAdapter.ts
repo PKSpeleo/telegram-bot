@@ -1,13 +1,28 @@
 import { PromiseQueue } from '../utils/promiseQueue';
-import { GetConfigFile, getConfigFile } from './wireguard';
+import { addClient, GetConfigFile, getConfigFile } from './wireguard';
+import { BotContext, BotProperties } from '../bot/shared/interfaces';
+import { PeerDataConfig } from './wireguardConfigUtils';
 
 //TODO set maximum keys limit when generating it
-const MAX_KEYS_PER_USER = 3;
 
 export class WireguardBotAdapter {
   private queue = new PromiseQueue();
 
   public async getWireguardConfig(): Promise<GetConfigFile> {
     return this.queue.enqueue(getConfigFile);
+  }
+
+  public async addClient(botProperties: BotProperties, ctx: BotContext): Promise<GetConfigFile> {
+    const dataForPeerConfig: PeerDataConfig = {
+      firstName: ctx.from.first_name,
+      lastName: ctx.from.last_name,
+      userName: ctx.from.username,
+      userId: ctx.from.id.toString()
+    };
+
+    function createAddClientFunction() {
+      return addClient(dataForPeerConfig, botProperties.SERVER_IP, botProperties.NAME);
+    }
+    return this.queue.enqueue(createAddClientFunction);
   }
 }

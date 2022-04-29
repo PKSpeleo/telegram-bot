@@ -89,6 +89,11 @@ export async function generatePubKey(privatKey: string): Promise<string> {
   });
   return publicKey;
 }
+export async function syncConfig(): Promise<void> {
+  const publicKey = await execChildProcess(`wg syncconf wg0 <(wg-quick strip wg0)`).catch((err) => {
+    throw new Error('Error during cong syncing.');
+  });
+}
 
 // names longer then 15 symbols not supported!
 export function generateClientFileName(
@@ -179,6 +184,8 @@ export async function addClient(
 
   wgConfigObject.peers.push(dataForServerConfigUpdate);
   await writeConfig(wgConfigObject);
+
+  await syncConfig();
 
   return {
     content: clientConfigFile.content,

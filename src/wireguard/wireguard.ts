@@ -190,7 +190,7 @@ export async function addClient(
 
   await syncConfig();
 
-  await createBackup();
+  await createBackup(serverName);
 
   return {
     content: clientConfigFile.content,
@@ -199,9 +199,10 @@ export async function addClient(
   };
 }
 
-export async function createBackup(): Promise<GetConfigFile> {
+//TODO not cowered by tests. Solve this problem (mock cmd?)
+export async function createBackup(serverName: string): Promise<GetConfigFile> {
   const backupPath = path.join(WG_PATH, WG_BACKUP_PATH);
-  const backupFileName = dayjs().format('YYYY-MM-DD__HH-mm-ss');
+  const backupFileName = serverName + '__' + dayjs().format('YYYY-MM-DD__HH-mm-ss');
   const backupFilePath = path.join(backupPath, backupFileName);
   await mkdir(backupPath, { recursive: true });
   await execChildProcess(

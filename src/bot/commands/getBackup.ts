@@ -7,7 +7,7 @@ export async function getBackup(ctx: BotContext, botProperties: BotProperties, l
   const { isAdmin } = await extractRights(ctx, botProperties);
   const isPrivateChat = ctx.from.id == ctx.chat.id;
   if (isAdmin && isPrivateChat) {
-    const configFile = await wg.getBackup().catch((err) => {
+    const configFile = await wg.getBackup(botProperties.NAME).catch((err) => {
       console.log('Error backup creation: ', err);
     });
     if (configFile) {

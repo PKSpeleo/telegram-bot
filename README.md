@@ -110,6 +110,10 @@ nvm install 16.14.2
 ```shell
 npm install pm2 -g
 ```
+- Install zip fo backups
+```shell
+apt install zip
+```
 
 ### Using PM2 for lunching pre-build and bundled node app
 - Copy PM2 config file to the server

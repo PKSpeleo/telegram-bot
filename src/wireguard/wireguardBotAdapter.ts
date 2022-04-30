@@ -1,5 +1,5 @@
 import { PromiseQueue } from '../utils/promiseQueue';
-import { addClient, GetConfigFile, getConfigFile } from './wireguard';
+import {addClient, createBackup, GetConfigFile, getConfigFile} from './wireguard';
 import { BotContext, BotProperties } from '../bot/shared/interfaces';
 import { PeerDataConfig } from './wireguardConfigUtils';
 
@@ -8,8 +8,8 @@ import { PeerDataConfig } from './wireguardConfigUtils';
 export class WireguardBotAdapter {
   private queue = new PromiseQueue();
 
-  public async getWireguardConfig(): Promise<GetConfigFile> {
-    return this.queue.enqueue(getConfigFile);
+  public async getBackup(): Promise<GetConfigFile> {
+    return this.queue.enqueue(createBackup);
   }
 
   public async addClient(botProperties: BotProperties, ctx: BotContext): Promise<GetConfigFile> {

@@ -10,7 +10,7 @@ import { logDebugInfoToConsole, stringifyDebugDate } from './shared/debug';
 import { sendMessagesToBosses } from './shared/boss';
 import { Logger } from '../utils/logger';
 import { reactOnLogCommand } from './commands/log';
-import { getConfigFile } from './commands/getConfigFile';
+import { getBackup } from './commands/getBackup';
 import { addClient } from './commands/addClient';
 
 export async function startBot(botProperties: BotProperties, logger: Logger) {
@@ -52,10 +52,10 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     reactOnLogCommand(ctx, botProperties, logger);
   });
 
-  bot.command('getConfigFile', async (ctx) => {
+  bot.command('getBackup', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
-    getConfigFile(ctx, botProperties, logger);
+    getBackup(ctx, botProperties, logger);
   });
 
   bot.command('addClient', async (ctx) => {

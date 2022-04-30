@@ -29,6 +29,7 @@ export interface GetConfigFile {
 
 const WG_PATH = '/etc/wireguard';
 const WG_USERS_PATH = 'users';
+const WG_BACKUP_PATH = 'backup';
 const WG_CONFIG = 'wg0.conf';
 const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss (Z)';
 
@@ -189,9 +190,28 @@ export async function addClient(
 
   await syncConfig();
 
+  await createBackup();
+
   return {
     content: clientConfigFile.content,
     fileName: clientConfigFile.fileName,
     filePath: clientConfigFile.filePath
+  };
+}
+
+export async function createBackup(): Promise<GetConfigFile> {
+  const backupPath = path.join(WG_PATH, WG_BACKUP_PATH);
+  const backupFileName = dayjs().format('YYYY-MM-DD__HH-mm-ss');
+  const backupFilePath = path.join(backupPath, backupFileName);
+  await mkdir(backupPath, { recursive: true });
+  await execChildProcess(
+    `cd ${WG_PATH} && zip -r ${backupFilePath} ./ -i '*params*' '*.conf'`
+  ).catch((err) => {
+    throw new Error(`Error during backup: ${err}`);
+  });
+  return {
+    fileName: backupFileName + '.zip',
+    filePath: backupFilePath + '.zip',
+    content: ''
   };
 }

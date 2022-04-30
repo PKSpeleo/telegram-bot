@@ -12,5 +12,6 @@
     "rootDir": ".",
     "outDir": "dist/js",
     "resolveJsonModule": true
-  }
+  },
+  "exclude": ["node_modules", "**/*.spec.ts"]
 }

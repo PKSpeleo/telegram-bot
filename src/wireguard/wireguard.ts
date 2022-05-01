@@ -25,6 +25,10 @@ export interface GetConfigFile {
   content: string;
   fileName: string;
   filePath: string;
+  additionalData?: {
+    isKeysNumberLimitExceeded?: boolean;
+    currentKeyNumber?: number;
+  };
 }
 
 const WG_PATH = '/etc/wireguard';
@@ -136,9 +140,24 @@ export async function writeClientConfig(
 export async function addClient(
   clientData: PeerDataConfig,
   serverIp: string,
-  serverName: string
+  serverName: string,
+  maximumNumberOfKeys?: number
 ): Promise<GetConfigFile> {
   const wgConfigObject = await getConfig();
+
+  const clientIndex = countSameUsersIds(wgConfigObject.peers, Number(clientData.userId));
+  if (maximumNumberOfKeys && clientIndex >= maximumNumberOfKeys) {
+    return {
+      content: '',
+      fileName: '',
+      filePath: '',
+      additionalData: {
+        isKeysNumberLimitExceeded: true,
+        currentKeyNumber: clientIndex
+      }
+    };
+  }
+
   const generatedKeys = await generateKeys();
   const serverPrivateKey = wgConfigObject.interface.config.PrivateKey;
   const serverPubKey = await generatePubKey(serverPrivateKey);
@@ -163,7 +182,6 @@ export async function addClient(
     }
   };
 
-  const clientIndex = countSameUsersIds(wgConfigObject.peers, Number(clientData.userId));
   const clientFileName = generateClientFileName(serverName, Number(clientData.userId), clientIndex);
   const clientConfigFile = await writeClientConfig(dataForClientConfigUpdate, clientFileName);
 
@@ -195,14 +213,17 @@ export async function addClient(
   return {
     content: clientConfigFile.content,
     fileName: clientConfigFile.fileName,
-    filePath: clientConfigFile.filePath
+    filePath: clientConfigFile.filePath,
+    additionalData: {
+      currentKeyNumber: clientIndex + 1
+    }
   };
 }
 
 //TODO not cowered by tests. Solve this problem (mock cmd?)
 export async function createBackup(serverName: string): Promise<GetConfigFile> {
   const backupPath = path.join(WG_PATH, WG_BACKUP_PATH);
-  const backupFileName = serverName + '__' + dayjs().format('YYYY-MM-DD__HH-mm-ss');
+  const backupFileName = serverName + '__' + dayjs().format('YYYY-MM-DD__HH-mm-ss-SSS');
   const backupFilePath = path.join(backupPath, backupFileName);
   await mkdir(backupPath, { recursive: true });
   await execChildProcess(

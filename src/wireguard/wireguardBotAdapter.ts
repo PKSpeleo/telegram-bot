@@ -15,7 +15,7 @@ export class WireguardBotAdapter {
     return this.queue.enqueue(createGetBackupFunction);
   }
 
-  public async addClient(botProperties: BotProperties, ctx: BotContext): Promise<GetConfigFile> {
+  public async addClient(botProperties: BotProperties, ctx: BotContext, maximumNumberOfKeys?: number): Promise<GetConfigFile> {
     const dataForPeerConfig: PeerDataConfig = {
       firstName: ctx.from.first_name,
       lastName: ctx.from.last_name,
@@ -24,7 +24,7 @@ export class WireguardBotAdapter {
     };
 
     function createAddClientFunction() {
-      return addClient(dataForPeerConfig, botProperties.SERVER_IP, botProperties.NAME);
+      return addClient(dataForPeerConfig, botProperties.SERVER_IP, botProperties.NAME, maximumNumberOfKeys);
     }
     return this.queue.enqueue(createAddClientFunction);
   }

@@ -51,7 +51,7 @@ export class Logger {
   }
 
   public writeToLogFile(string: string): void {
-    const stringWithDate = `${this.getLocalDateString()}: ${string}\n`;
+    const stringWithDate = `⭐️ ${this.getLocalDateString()}: ${string}\n`;
     this.logFileQueue
       .enqueue(() => fs.promises.appendFile(this.LOG_FILE_NAME, stringWithDate))
       .catch((err) => {

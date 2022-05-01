@@ -11,11 +11,19 @@ export async function getMyKeys(ctx: BotContext, botProperties: BotProperties, l
       console.log('Error during keys extraction: ', err);
     });
     if (keysPaths && keysPaths.length) {
+      await ctx.reply('Here it is you previously generated keys:', {
+        reply_to_message_id: ctx.message.message_id
+      });
       for (const path of keysPaths) {
         await ctx.replyWithDocument({ source: path }).catch((err) => {
           console.log('Error during file sending');
         });
       }
+    } else {
+      ctx.reply('You dont have any generated keys. Please generate it!', {
+        reply_to_message_id: ctx.message.message_id
+      });
+
     }
   }
 }

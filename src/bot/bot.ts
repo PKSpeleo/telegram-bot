@@ -12,6 +12,7 @@ import { Logger } from '../utils/logger';
 import { reactOnLogCommand } from './commands/log';
 import { getBackup } from './commands/getBackup';
 import { addClient } from './commands/addClient';
+import {getMyKeys} from "./commands/getMyKeys";
 
 export async function startBot(botProperties: BotProperties, logger: Logger) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
@@ -62,6 +63,13 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     addClient(ctx, botProperties, logger);
+  });
+
+
+  bot.command('getMyKeys', async (ctx) => {
+    logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
+    getMyKeys(ctx, botProperties, logger);
   });
 
   bot.command('quit', async (ctx) => {

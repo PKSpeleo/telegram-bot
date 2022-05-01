@@ -4,8 +4,10 @@ import {
   extractConfigAndAdditionalInformation,
   extractIpBases,
   findFirstFreeAddress,
+  getKeyFilesForUserId,
   parseTypicalConfig,
   parseWireguardConfig,
+  PeerConfig,
   serializeClientConfig,
   serializeInterface,
   serializePeer,
@@ -148,6 +150,44 @@ describe('wireguardConfigUtils', () => {
     test('should find 2 users', () => {
       const result = countSameUsersIds(parsedConfigWithoutThird.peers, 222);
       expect(result).toEqual(2);
+    });
+  });
+
+  describe('getKeyFilesForUserId', () => {
+    test('should find 0 fileNames', () => {
+      const result = getKeyFilesForUserId(
+        [
+          { data: { userId: '111', fileName: '111_1.conf' } },
+          { data: { userId: '222', fileName: '222_1.conf' } },
+          { data: { userId: '222', fileName: '222_2.conf' } }
+        ] as PeerConfig[],
+        333
+      );
+      expect(result).toEqual([]);
+    });
+
+    test('should find 1 fileNames', () => {
+      const result = getKeyFilesForUserId(
+        [
+          { data: { userId: '111', fileName: '111_1.conf' } },
+          { data: { userId: '222', fileName: '222_1.conf' } },
+          { data: { userId: '222', fileName: '222_2.conf' } }
+        ] as PeerConfig[],
+        111
+      );
+      expect(result).toEqual(['111_1.conf']);
+    });
+
+    test('should find 2 fileNames', () => {
+      const result = getKeyFilesForUserId(
+        [
+          { data: { userId: '111', fileName: '111_1.conf' } },
+          { data: { userId: '222', fileName: '222_1.conf' } },
+          { data: { userId: '222', fileName: '222_2.conf' } }
+        ] as PeerConfig[],
+        222
+      );
+      expect(result).toEqual(['222_1.conf', '222_2.conf']);
     });
   });
 });

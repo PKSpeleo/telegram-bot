@@ -1,3 +1,5 @@
+import { getConfig } from './wireguard';
+
 interface DynamicObject {
   [key: string]: string | undefined;
 }
@@ -384,4 +386,17 @@ export function findFirstFreeAddress(peers: PeerConfig[]): string {
 export function countSameUsersIds(peers: PeerConfig[], userId: number): number {
   const peersTimes = peers.filter((peer) => peer.data?.userId === userId.toString());
   return peersTimes.length;
+}
+
+export function getKeyFilesForUserId(peers: PeerConfig[], userId: number): string[] {
+  const currenUserPeers: PeerConfig[] = peers.filter(
+    (peer) => peer.data?.userId === userId.toString()
+  );
+  const currentUserPeersWithFileNames: PeerConfig[] = currenUserPeers.filter(
+    (peer) => peer.data?.fileName
+  );
+  const currentUserFileNames: string[] = currentUserPeersWithFileNames.map(
+    (peer) => peer.data?.fileName || ''
+  );
+  return currentUserFileNames;
 }

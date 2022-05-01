@@ -1,5 +1,11 @@
 import { PromiseQueue } from '../utils/promiseQueue';
-import { addClient, createBackup, GetConfigFile, getConfigFile } from './wireguard';
+import {
+  addClient,
+  createBackup,
+  GetConfigFile,
+  getConfigFile,
+  getKeyFilePathsForUserId
+} from './wireguard';
 import { BotContext, BotProperties } from '../bot/shared/interfaces';
 import { PeerDataConfig } from './wireguardConfigUtils';
 
@@ -8,6 +14,13 @@ import { PeerDataConfig } from './wireguardConfigUtils';
 export class WireguardBotAdapter {
   private queue = new PromiseQueue();
 
+  public async getUsersKeysPaths(userId: number): Promise<string[]> {
+    function createGetKeyFilePathsForUserId() {
+      return getKeyFilePathsForUserId(userId);
+    }
+    return this.queue.enqueue(createGetKeyFilePathsForUserId);
+  }
+
   public async getBackup(serverName: string): Promise<GetConfigFile> {
     function createGetBackupFunction() {
       return createBackup(serverName);
@@ -15,7 +28,11 @@ export class WireguardBotAdapter {
     return this.queue.enqueue(createGetBackupFunction);
   }
 
-  public async addClient(botProperties: BotProperties, ctx: BotContext, maximumNumberOfKeys?: number): Promise<GetConfigFile> {
+  public async addClient(
+    botProperties: BotProperties,
+    ctx: BotContext,
+    maximumNumberOfKeys?: number
+  ): Promise<GetConfigFile> {
     const dataForPeerConfig: PeerDataConfig = {
       firstName: ctx.from.first_name,
       lastName: ctx.from.last_name,
@@ -24,7 +41,12 @@ export class WireguardBotAdapter {
     };
 
     function createAddClientFunction() {
-      return addClient(dataForPeerConfig, botProperties.SERVER_IP, botProperties.NAME, maximumNumberOfKeys);
+      return addClient(
+        dataForPeerConfig,
+        botProperties.SERVER_IP,
+        botProperties.NAME,
+        maximumNumberOfKeys
+      );
     }
     return this.queue.enqueue(createAddClientFunction);
   }

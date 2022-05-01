@@ -4,6 +4,7 @@ import {
   countSameUsersIds,
   extractIpBases,
   findFirstFreeAddress,
+  getKeyFilesForUserId,
   parseWireguardConfig,
   PeerConfig,
   PeerDataConfig,
@@ -236,4 +237,11 @@ export async function createBackup(serverName: string): Promise<GetConfigFile> {
     filePath: backupFilePath + '.zip',
     content: ''
   };
+}
+
+export async function getKeyFilePathsForUserId(userId: number): Promise<string[]> {
+  const config = await getConfig();
+  const userFileNames = getKeyFilesForUserId(config.peers, userId);
+  const userFilePats = userFileNames.map((fileName) => path.join(WG_PATH, WG_USERS_PATH, fileName));
+  return userFilePats;
 }

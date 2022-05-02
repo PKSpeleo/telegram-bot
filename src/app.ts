@@ -1,8 +1,8 @@
 import { startBot } from './bot/bot';
 import { extractEnv } from './utils/extractEnv';
 import { Logger } from './utils/logger';
-import chalk from "chalk";
-import {WireguardBotAdapter} from "./wireguard/wireguardBotAdapter";
+import chalk from 'chalk';
+import { WireguardBotAdapter } from './wireguard/wireguardBotAdapter';
 
 const logger = new Logger();
 export const wg = new WireguardBotAdapter();
@@ -14,7 +14,7 @@ logger.writeToLogFile(`🤖 Starting version ${botProperties.VERSION} ${botPrope
 logger.logToConsole(
   `BOT Name: ${botProperties.NAME}
 BOT Token: ${botProperties.TOKEN}
-Server for ping: ${JSON.stringify(botProperties.SERVER_FOR_PING)}
+DNS Servers: ${botProperties.DNS_SERVERS}
 Admins ID: ${botProperties.ADMIN_ID}
 Supported chat ID: ${botProperties.SUPPORTED_CHAT_ID}
 Server IP Address: ${botProperties.SERVER_IP}

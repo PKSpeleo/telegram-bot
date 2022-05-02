@@ -13,7 +13,7 @@ export const USER_STATUSES = {
 
 export interface BotProperties {
   TOKEN: string;
-  SERVER_FOR_PING: ServerForPing[];
+  DNS_SERVERS: string[];
   ADMIN_ID: number[];
   SUPPORTED_CHAT_ID: number[];
   SERVER_IP: string;

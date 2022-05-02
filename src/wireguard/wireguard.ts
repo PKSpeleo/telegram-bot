@@ -209,7 +209,7 @@ export async function addClient(
   wgConfigObject.peers.push(dataForServerConfigUpdate);
   await writeConfig(wgConfigObject);
 
-  // await syncConfig();
+  await syncConfig();
 
   await createBackup(serverName);
 

@@ -43,6 +43,7 @@ interface PeerConfigConfig {
   PublicKey: string;
   PresharedKey: string;
   AllowedIPs: string;
+
 }
 
 export interface PeerConfig {
@@ -62,6 +63,7 @@ export interface ClientConfig {
     type: string;
     PrivateKey: string;
     Address: string;
+    DNS: string[];
   };
   peer: {
     type: string;
@@ -282,10 +284,16 @@ export function serializeClientConfig(config: ClientConfig): string {
     serializedAllowedIPs = serializedAllowedIPs + `AllowedIPs = ${address}\n`;
   });
 
+  let serializedDNS = '';
+  config.interface.DNS.forEach((address) => {
+    serializedDNS = serializedDNS + `DNS = ${address}\n`;
+  });
+
   const output =
     serializedInterface +
     serializedPrivateKey +
     serializedAddress +
+    serializedDNS +
     '\n' +
     serializedPeer +
     serializedPublicKey +

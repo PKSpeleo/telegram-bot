@@ -45,6 +45,7 @@ export class WireguardBotAdapter {
         dataForPeerConfig,
         botProperties.SERVER_IP,
         botProperties.NAME,
+        botProperties.DNS_SERVERS,
         maximumNumberOfKeys
       );
     }

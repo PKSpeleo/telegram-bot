@@ -567,6 +567,8 @@ export const serializedClientConfig = `[Interface]
 PrivateKey = aiupououyuiyiuyom,nm,nbkjjkhgklg
 Address = 10.66.66.24/32
 Address = fd42:42:42::24/128
+DNS = 1.1.1.1
+DNS = 8.8.8.8
 
 [Peer]
 PublicKey = nmbvcnmbvnmm,bvnm,bvghjbnmvm
@@ -579,7 +581,8 @@ export const parsedClientConfig: ClientConfig = {
   interface: {
     type: `[Interface]`,
     PrivateKey: `aiupououyuiyiuyom,nm,nbkjjkhgklg`,
-    Address: `10.66.66.24/32,fd42:42:42::24/128`
+    Address: `10.66.66.24/32,fd42:42:42::24/128`,
+    DNS: ['1.1.1.1','8.8.8.8']
   },
   peer: {
     type: `[Peer]`,

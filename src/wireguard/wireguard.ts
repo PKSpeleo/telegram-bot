@@ -142,6 +142,7 @@ export async function addClient(
   clientData: PeerDataConfig,
   serverIp: string,
   serverName: string,
+  DNSServers: string[],
   maximumNumberOfKeys?: number
 ): Promise<GetConfigFile> {
   const wgConfigObject = await getConfig();
@@ -172,7 +173,8 @@ export async function addClient(
     interface: {
       type: '[Interface]',
       PrivateKey: generatedKeys.PrivateKey,
-      Address: addressString
+      Address: addressString,
+      DNS: DNSServers
     },
     peer: {
       type: `[Peer]`,
@@ -207,7 +209,7 @@ export async function addClient(
   wgConfigObject.peers.push(dataForServerConfigUpdate);
   await writeConfig(wgConfigObject);
 
-  await syncConfig();
+  // await syncConfig();
 
   await createBackup(serverName);
 

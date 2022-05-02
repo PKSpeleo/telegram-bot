@@ -1,6 +1,6 @@
 {
   "name": "vpn-telegram-bot",
-  "version": "0.3.3-alpha.5",
+  "version": "0.3.3-alpha.6",
   "license": "MIT",
   "author": "Pavel Katkov",
   "main": "dist/app.ts",
@@ -48,7 +48,6 @@
     "chalk": "^4.1.2",
     "dayjs": "^1.11.1",
     "dotenv": "^16.0.0",
-    "ping": "^0.4.2",
     "telegraf": "^4.8.1"
   },
   "keywords": [],

@@ -4631,14 +4631,6 @@ pify@^3.0.0:
   resolved "https://registry.npmjs.org/pify/-/pify-3.0.0.tgz"
   integrity sha1-5aSs0sEB/fPZpNB/DbxNtJ3SgXY=
 
-ping@^0.4.2:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/ping/-/ping-0.4.2.tgz#8ca8857f201281b5977fe765e7887d0477b5cf52"
-  integrity sha512-1uAw0bzHtrPbPo2s6no06oZAzY6KqKclEJR1JRZKIHKXKlPdrz9N0/1MPPB+BbrvMjN3Mk0pcod3bfLNZFRo9w==
-  dependencies:
-    q "1.x"
-    underscore "^1.12.0"
-
 pirates@^4.0.4:
   version "4.0.5"
   resolved "https://registry.npmjs.org/pirates/-/pirates-4.0.5.tgz"
@@ -4750,7 +4742,7 @@ pupa@^2.1.1:
   dependencies:
     escape-goat "^2.0.0"
 
-q@1.x, q@^1.5.1:
+q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.npmjs.org/q/-/q-1.5.1.tgz"
   integrity sha1-fjL3W0E4EpHQRhHxvxQQmsAGUdc=
@@ -5666,11 +5658,6 @@ undefsafe@^2.0.5:
   version "2.0.5"
   resolved "https://registry.npmjs.org/undefsafe/-/undefsafe-2.0.5.tgz"
   integrity sha512-WxONCrssBM8TSPRqN5EmsjVrsv4A8X12J4ArBiiayv3DyyG3ZlIg6yysuuSYdZsVz3TKcTg2fd//Ujd4CHV1iA==
-
-underscore@^1.12.0:
-  version "1.13.2"
-  resolved "https://registry.npmjs.org/underscore/-/underscore-1.13.2.tgz"
-  integrity sha512-ekY1NhRzq0B08g4bGuX4wd2jZx5GnKz6mKSqFL4nqBlfyMGiG10gDFhDTMEfYmDL6Jy0FUIZp7wiRB+0BP7J2g==
 
 unique-string@^2.0.0:
   version "2.0.0"

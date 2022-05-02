@@ -574,6 +574,7 @@ DNS = 8.8.8.8
 PublicKey = nmbvcnmbvnmm,bvnm,bvghjbnmvm
 PresharedKey = gkghgjhgjkgkjhgkgkjghkjgkjgjkgjkgh
 Endpoint = 1.1.1.1:76542
+PersistentKeepalive = 23
 AllowedIPs = 0.0.0.0/0
 AllowedIPs = ::/0`;
 
@@ -589,6 +590,7 @@ export const parsedClientConfig: ClientConfig = {
     PublicKey: `nmbvcnmbvnmm,bvnm,bvghjbnmvm`,
     PresharedKey: `gkghgjhgjkgkjhgkgkjghkjgkjgjkgjkgh`,
     Endpoint: `1.1.1.1:76542`,
+    PersistentKeepalive: '23',
     AllowedIPs: `0.0.0.0/0,::/0`
   }
 };

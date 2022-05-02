@@ -181,7 +181,8 @@ export async function addClient(
       PublicKey: serverPubKey,
       PresharedKey: generatedKeys.PresharedKey,
       Endpoint: serverAddress,
-      AllowedIPs: '0.0.0.0/0,::/0'
+      AllowedIPs: '0.0.0.0/0,::/0',
+      PersistentKeepalive: '23'
     }
   };
 

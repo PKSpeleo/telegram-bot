@@ -70,6 +70,7 @@ export interface ClientConfig {
     PresharedKey: string;
     Endpoint: string;
     AllowedIPs: string;
+    PersistentKeepalive: string;
   };
 }
 
@@ -288,6 +289,8 @@ export function serializeClientConfig(config: ClientConfig): string {
     serializedDNS = serializedDNS + `DNS = ${address}\n`;
   });
 
+  const serializedKeepAlive = `PersistentKeepalive = ${config.peer.PersistentKeepalive}\n`
+
   const output =
     serializedInterface +
     serializedPrivateKey +
@@ -298,6 +301,7 @@ export function serializeClientConfig(config: ClientConfig): string {
     serializedPublicKey +
     serializedPresharedKey +
     serializedEndpoint +
+    serializedKeepAlive +
     serializedAllowedIPs.trim();
   return output;
 }

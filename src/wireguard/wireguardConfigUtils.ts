@@ -43,7 +43,6 @@ interface PeerConfigConfig {
   PublicKey: string;
   PresharedKey: string;
   AllowedIPs: string;
-
 }
 
 export interface PeerConfig {

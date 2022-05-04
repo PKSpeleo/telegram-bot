@@ -3,12 +3,22 @@ import { Logger } from '../../utils/logger';
 import { extractRights } from '../shared/rights';
 import { wg } from '../../app';
 import { stringifyDebugDate } from '../shared/debug';
+import { sendMessagesToBosses } from '../shared/boss';
 
 const MAXIMUM_NUMBER_OF_KEYS = 3;
 
 export async function addClient(ctx: BotContext, botProperties: BotProperties, logger: Logger) {
   const { isAdmin, isUserMemberOfSupportedChats } = await extractRights(ctx, botProperties);
   const isPrivateChat = ctx.from.id == ctx.chat.id;
+
+  const messageForBosses = `🔑 ${ctx.from.first_name} ${ctx.from.last_name} (@${
+    ctx.from.username
+  }) ${ctx.from.id} ${isUserMemberOfSupportedChats ? '+' : '-'} Creating the key`;
+  await sendMessagesToBosses(botProperties.ADMIN_ID, ctx, messageForBosses);
+  ctx.reply(`Hello, ${ctx.from.first_name} ${ctx.from.last_name} (@${ctx.from.username})!`, {
+    reply_to_message_id: ctx.message.message_id
+  });
+
   if (isPrivateChat && (isAdmin || isUserMemberOfSupportedChats)) {
     const configFile = await wg
       .addClient(botProperties, ctx, isAdmin ? undefined : MAXIMUM_NUMBER_OF_KEYS)

@@ -43,8 +43,7 @@ const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss (Z)';
 export async function getConfig(): Promise<WireguardConfig> {
   const configFilePath = path.join(WG_PATH, WG_CONFIG);
   const configString = await readFile(configFilePath, 'utf8').catch((err) => {
-    //TODO add to log file
-    console.log('Error during file reading', err);
+    throw new Error(`Error during file reading: ${err}`);
   });
   if (!configString || configString == '') {
     throw new Error('Empty config file');
@@ -57,16 +56,14 @@ export async function writeConfig(configObject: WireguardConfig): Promise<void> 
   const configFilePath = path.join(WG_PATH, WG_CONFIG);
   const serializedConfig = serializeWireguardConfig(configObject);
   await writeFile(configFilePath, serializedConfig).catch((err) => {
-    //TODO add to log file
-    console.log('Error during file writing', err);
+    throw new Error(`Error during file writing: ${err}`);
   });
 }
 
 export async function getConfigFile(): Promise<GetConfigFile> {
   const configFilePath = path.join(WG_PATH, WG_CONFIG);
   const configString = await readFile(configFilePath, 'utf8').catch((err) => {
-    //TODO add to log file
-    console.log('Error during file reading', err);
+    throw new Error(`Error during file reading: ${err}`);
   });
   if (!configString || configString == '') {
     throw new Error('Empty config file');
@@ -125,8 +122,7 @@ export async function writeClientConfig(
   const serializedConfig = serializeClientConfig(configObject);
   await mkdir(path.join(WG_PATH, WG_USERS_PATH), { recursive: true });
   await writeFile(configFilePath, serializedConfig).catch((err) => {
-    //TODO add to log file
-    console.log('Error during file writing', err);
+    throw new Error(`Error during file writing: ${err}`);
   });
 
   return {

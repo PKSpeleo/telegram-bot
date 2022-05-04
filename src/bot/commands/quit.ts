@@ -8,7 +8,9 @@ export async function reactOnQuitCommand(ctx: BotContext, botProperties: BotProp
   const { isAdmin } = await extractRights(ctx, botProperties);
   const isNotPrivateChat = ctx.from.id !== ctx.chat.id;
   if (isAdmin && isNotPrivateChat) {
-    ctx.reply('Goodbye ' + ctx.from.first_name + '!',{ reply_to_message_id: ctx.message.message_id});
+    ctx.reply('Goodbye ' + ctx.from.first_name + '!', {
+      reply_to_message_id: ctx.message.message_id
+    });
     ctx.leaveChat();
   }
 }

@@ -7,9 +7,9 @@ import { stringifyDebugDate } from '../shared/debug';
 const MAXIMUM_NUMBER_OF_KEYS = 3;
 
 export async function addClient(ctx: BotContext, botProperties: BotProperties, logger: Logger) {
-  const { isAdmin } = await extractRights(ctx, botProperties);
+  const { isAdmin, isUserMemberOfSupportedChats } = await extractRights(ctx, botProperties);
   const isPrivateChat = ctx.from.id == ctx.chat.id;
-  if (isAdmin && isPrivateChat) {
+  if (isPrivateChat && (isAdmin || isUserMemberOfSupportedChats)) {
     const configFile = await wg
       .addClient(botProperties, ctx, isAdmin ? undefined : MAXIMUM_NUMBER_OF_KEYS)
       .catch(async (err) => {
@@ -17,13 +17,22 @@ export async function addClient(ctx: BotContext, botProperties: BotProperties, l
           reply_to_message_id: ctx.message.message_id
         });
         console.log('Error during client adding! ', err);
-        logger.writeToLogFile('🛑 ' + (await stringifyDebugDate(ctx, botProperties)) + ' Error!');
+        logger.writeToLogFile(
+          '🛑 ' +
+            (await stringifyDebugDate(ctx, botProperties)) +
+            ` Error during client adding: ${err}`
+        );
       });
     if (configFile && !configFile.additionalData?.isKeysNumberLimitExceeded) {
       await ctx
         .replyWithDocument({ source: configFile.filePath, filename: configFile.fileName })
-        .catch((err) => {
-          console.log('Error during file sending');
+        .catch(async (err) => {
+          console.log('Error during file sending', err);
+          logger.writeToLogFile(
+            '🛑 ' +
+              (await stringifyDebugDate(ctx, botProperties)) +
+              ` Error during client adding: ${err}`
+          );
         });
       logger.writeToLogFile(
         '🔑 ' +

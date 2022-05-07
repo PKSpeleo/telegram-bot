@@ -50,18 +50,4 @@ jobs:
         run: scp -P ${{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
       - name: Deploy NL app
         run: scp -P ${{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_IP }}:/root/telegram-bot'
-      - name: Create NL_OLD envfile
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_BOT_CURRENT_NAME: "NL_OLD"
-          envkey_BOT_SETTINGS_NL_OLD: ${{ secrets.BOT_SETTINGS_NL_OLD }}
-          file_name: .env
-          fail_on_empty: false
-      - name: Check .env file
-        run: ls ${{ github.workspace }} --all
-      - name: Deploy NL_OLD env
-        run: scp -P ${{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/.env '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_OLD_IP }}:/root/telegram-bot'
-      - name: Deploy NL_OLD app
-        run: scp -P ${{ secrets.VPS_NL_PORT }} ${{ github.workspace }}/dist/node/telegram_bot.js '${{ secrets.VPS_USER }}@${{ secrets.VPS_NL_OLD_IP }}:/root/telegram-bot'
-
 

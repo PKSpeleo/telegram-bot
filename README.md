@@ -26,10 +26,10 @@ By the way!
 - [x] Implement same logging to local file on server (with write queue). 
 - [x] Lunch console commands and parse the result by Bot command form Boss
 - [x] Implement Wireguard Config File Parser and Serializer
-- [ ] Explore commands to update Wireguard
-- [ ] Implement adding new user and rebooting Wireguard
-- [ ] Generate new user data (config for server and for user)
-- [ ] Implement whole flow of the user creation with Bot 
+- [x] Explore commands to update Wireguard
+- [x] Implement adding new user and rebooting Wireguard
+- [x] Generate new user data (config for server and for user)
+- [x] Implement whole flow of the user creation with Bot 
 
 ### Known problems
 - [ ] Figure out with wired behaviour when admin post and call /commands in Channels comments (works fine for users)

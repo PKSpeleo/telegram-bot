@@ -46,20 +46,19 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     reactOnLogCommand(ctx, botProperties, logger);
   });
 
-  bot.command('getBackup', async (ctx) => {
+  bot.command('getbackup', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     getBackup(ctx, botProperties, logger);
   });
 
-  bot.command('addClient', async (ctx) => {
+  bot.command('addclient', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     addClient(ctx, botProperties, logger);
   });
 
-
-  bot.command('getMyKeys', async (ctx) => {
+  bot.command('getmykeys', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     getMyKeys(ctx, botProperties, logger);

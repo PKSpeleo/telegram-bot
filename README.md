@@ -88,7 +88,8 @@ apt-get update
 ```
 - Install speedtest
 ```shell
-curl -s https://install.speedtest.net/app/cli/install.deb.sh | sudo bash
+curl -s https://install.speedtest.net/app/cli/install.deb.sh | bash &&
+apt-get install speedtest
 ```
 - Install resources monitor [htop](https://htop.dev/)
 ```shell

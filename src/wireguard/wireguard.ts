@@ -36,6 +36,7 @@ const WG_PATH = '/etc/wireguard';
 const WG_USERS_PATH = 'users';
 const WG_BACKUP_PATH = 'backup';
 const WG_CONFIG = 'wg0.conf';
+const WG_KEY_USER_PAIRS_FAIL_NAME = 'key-user-pairs.txt';
 const DATE_FORMAT = 'DD-MM-YYYY HH:mm:ss (Z)';
 
 // Do not use this functions directly!
@@ -243,4 +244,43 @@ export async function getKeyFilePathsForUserId(userId: number): Promise<string[]
   const userFileNames = getKeyFilesForUserId(config.peers, userId);
   const userFilePats = userFileNames.map((fileName) => path.join(WG_PATH, WG_USERS_PATH, fileName));
   return userFilePats;
+}
+
+export async function getKeyUserPairs(): Promise<GetConfigFile> {
+  const keyUserPairsFilePath = path.join(WG_PATH, WG_USERS_PATH, WG_KEY_USER_PAIRS_FAIL_NAME);
+
+  const config = await getConfig();
+  const clientKeyUserPairs: string[] = [];
+
+  config.peers.forEach((peer) => {
+    const key = peer.config.PresharedKey;
+    let name = 'Undefined';
+
+    if (peer.data?.userName) {
+      name = peer.data.userName;
+    }
+
+    if (peer.data?.firstName) {
+      name = name + ' ' + peer.data.firstName;
+    }
+
+    if (peer.data?.lastName) {
+      name = name + ' ' + peer.data.lastName;
+    }
+
+    clientKeyUserPairs.push(`"${key}", "${name}"`);
+  });
+
+  const serializedPairs = clientKeyUserPairs.join('\n');
+
+  await mkdir(path.join(WG_PATH, WG_USERS_PATH), { recursive: true });
+  await writeFile(keyUserPairsFilePath, serializedPairs).catch((err) => {
+    throw new Error(`Error during file writing: ${err}`);
+  });
+
+  return {
+    fileName: WG_KEY_USER_PAIRS_FAIL_NAME,
+    filePath: keyUserPairsFilePath,
+    content: ''
+  };
 }

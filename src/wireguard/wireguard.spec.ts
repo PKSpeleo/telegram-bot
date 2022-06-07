@@ -4,6 +4,7 @@ import {
   generatePubKey,
   getConfig,
   getConfigFile,
+  getKeyUserPairs,
   writeClientConfig,
   writeConfig
 } from './wireguard';
@@ -86,5 +87,22 @@ describe('Wireguard', () => {
       fileName: 'test_name.conf',
       filePath: '/etc/wireguard/users/test_name.conf'
     });
+  });
+
+  test('getKeyUserPairs', async () => {
+    const res = await getKeyUserPairs();
+
+    expect(res).toEqual({
+      content: '',
+      fileName: 'key-user-pairs.txt',
+      filePath: '/etc/wireguard/users/key-user-pairs.txt'
+    });
+
+    expect(await fs.promises.readFile('/etc/wireguard/users/key-user-pairs.txt', 'utf8')).toEqual(
+      '"asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf", "tru-la-la-1 la-la-tru-2 last name"\n' +
+        '"asdfiop4iefjkdsafk;hjsiwue", "tru-la-la-3 la-la-tru-4"\n' +
+        '"asdkfjfiu930wterioghjkfdls;ghjiuoerpwjkl", "tru-la-la-5 la-la-tru-6"\n' +
+        '"aklsjdfklasdasfhahshlflasjhfafs", "Undefined"'
+    );
   });
 });

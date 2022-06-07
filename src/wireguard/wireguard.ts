@@ -254,7 +254,7 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
 
   config.peers.forEach((peer) => {
     const key = peer.config.PublicKey;
-    let name = 'Undefined';
+    let name = '';
 
     if (peer.data?.userName) {
       name = peer.data.userName;
@@ -266,6 +266,10 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
 
     if (peer.data?.lastName) {
       name = name + ' ' + peer.data.lastName;
+    }
+
+    if (name.trim().length === 0) {
+      name = 'Undefined';
     }
 
     clientKeyUserPairs.push(`"${key}", "${name}"`);

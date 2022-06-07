@@ -257,15 +257,15 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
     let name = '';
 
     if (peer.data?.userName) {
-      name = peer.data.userName;
+      name = (peer.data.userName).trim();
     }
 
     if (peer.data?.firstName) {
-      name = name + ' ' + peer.data.firstName;
+      name = (name + ' ' + peer.data.firstName).trim();
     }
 
     if (peer.data?.lastName) {
-      name = name + ' ' + peer.data.lastName;
+      name = (name + ' ' + peer.data.lastName).trim();
     }
 
     if (name.trim().length === 0) {

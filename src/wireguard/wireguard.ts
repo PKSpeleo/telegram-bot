@@ -253,7 +253,7 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
   const clientKeyUserPairs: string[] = [];
 
   config.peers.forEach((peer) => {
-    const key = peer.config.PresharedKey;
+    const key = peer.config.PublicKey;
     let name = 'Undefined';
 
     if (peer.data?.userName) {

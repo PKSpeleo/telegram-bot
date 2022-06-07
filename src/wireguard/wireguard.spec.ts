@@ -99,10 +99,10 @@ describe('Wireguard', () => {
     });
 
     expect(await fs.promises.readFile('/etc/wireguard/users/key-user-pairs.txt', 'utf8')).toEqual(
-      '"asfjas;fjalksjdfioeuqrpoiuweioruiojdfsalkf", "tru-la-la-1 la-la-tru-2 last name"\n' +
-        '"asdfiop4iefjkdsafk;hjsiwue", "tru-la-la-3 la-la-tru-4"\n' +
-        '"asdkfjfiu930wterioghjkfdls;ghjiuoerpwjkl", "tru-la-la-5 la-la-tru-6"\n' +
-        '"aklsjdfklasdasfhahshlflasjhfafs", "Undefined"'
+      '"dsfjsfjaslkdjfoajsdf jasfjlasjdfl;j asldjf lajsdf", "tru-la-la-1 la-la-tru-2 last name"\n' +
+        '"dafkjs;fvmn,xcnvioqur0uwer[ujfas=", "tru-la-la-3 la-la-tru-4"\n' +
+        '"Yasdfkjsfk;auwioetrhjfds", "tru-la-la-5 la-la-tru-6"\n' +
+        '"dsfjhiueorpwtjkghiuopfjaklsgdhioutpwjerklghsdfi", "Undefined"'
     );
   });
 });

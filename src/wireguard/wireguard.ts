@@ -285,7 +285,7 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
       name = 'Undefined';
     }
 
-    clientKeyUserPairs.push(`"${key}", "${name}"`);
+    clientKeyUserPairs.push(`"${key}","${name}"`);
   });
 
   const serializedPairs = clientKeyUserPairs.join('\n');

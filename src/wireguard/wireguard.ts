@@ -35,9 +35,11 @@ export interface GetConfigFile {
 export interface UsersStats {
   rawData: PeerConfig[];
   usersMap: Map<string, PeerConfig[]>;
+  telegramUsersIds: string[];
   stats: {
     totalUsers: number;
     totalUniqueUsers: number;
+    totalTelegramUsers: number;
     usersWithOneKey: number;
     usersWithTwoKeys: number;
     usersWithThreeKeys: number;
@@ -307,12 +309,16 @@ export async function getUsersStats(): Promise<UsersStats> {
   const usersMap = new Map<string, PeerConfig[]>();
   const rawData = config.peers;
   const totalUsers = rawData.length;
+  const telegramUsersIds: string[] = [];
   let usersWithOneKey = 0;
   let usersWithTwoKeys = 0;
   let usersWithThreeKeys = 0;
   let usersWithFourAndMoreKeys = 0;
 
   rawData.forEach((peer) => {
+    if (peer.data?.userId) {
+      telegramUsersIds.push(peer.data.userId);
+    }
     const userId = peer.data?.userId || 'Unknown';
     if (usersMap.has(userId)) {
       const usersPeers = usersMap.get(userId) || [];
@@ -344,8 +350,10 @@ export async function getUsersStats(): Promise<UsersStats> {
   return {
     rawData,
     usersMap,
+    telegramUsersIds,
     stats: {
       totalUsers,
+      totalTelegramUsers: telegramUsersIds.length,
       totalUniqueUsers,
       usersWithOneKey,
       usersWithTwoKeys,

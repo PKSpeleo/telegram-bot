@@ -10,9 +10,23 @@ export async function extractRights(ctx: BotContext, botProperties: BotPropertie
     botProperties.SUPPORTED_CHAT_ID?.length && botProperties.SUPPORTED_CHAT_ID.includes(ctx.chat.id)
   );
 
+  const isUserMemberOfSupportedChats = await determineIsUserMemberOfSupportedChats(
+    ctx,
+    botProperties,
+    ctx.from.id
+  );
+
+  return { isAdmin, isSupportedChat, isUserMemberOfSupportedChats };
+}
+
+export async function determineIsUserMemberOfSupportedChats(
+  ctx: BotContext,
+  botProperties: BotProperties,
+  userId: number
+): Promise<boolean> {
   const userStatusesForSupportedChats = await getUserStatusesForSupportedChats(
     botProperties.SUPPORTED_CHAT_ID,
-    ctx.from.id,
+    userId,
     ctx
   );
 
@@ -22,7 +36,7 @@ export async function extractRights(ctx: BotContext, botProperties: BotPropertie
     MEMBER_STATUSES.includes(status)
   );
 
-  return { isAdmin, isSupportedChat, isUserMemberOfSupportedChats };
+  return isUserMemberOfSupportedChats;
 }
 
 async function getUserStatusesForSupportedChats(

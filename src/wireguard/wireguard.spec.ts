@@ -113,9 +113,11 @@ describe('Wireguard', () => {
     expect(res).toEqual(
       expect.objectContaining({
         rawData: parsedConfig.peers,
+        telegramUsersIds: ['23123123123'],
         stats: {
           totalUsers: 4,
           totalUniqueUsers: 2,
+          totalTelegramUsers: 1,
           usersWithOneKey: 1,
           usersWithTwoKeys: 0,
           usersWithThreeKeys: 1,

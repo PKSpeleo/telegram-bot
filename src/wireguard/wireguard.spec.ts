@@ -5,6 +5,7 @@ import {
   getConfig,
   getConfigFile,
   getKeyUserPairs,
+  getUsersStats,
   writeClientConfig,
   writeConfig
 } from './wireguard';
@@ -103,6 +104,24 @@ describe('Wireguard', () => {
         '"dafkjs;fvmn,xcnvioqur0uwer[ujfas=", "tru-la-la-3 la-la-tru-4"\n' +
         '"Yasdfkjsfk;auwioetrhjfds", "tru-la-la-5 la-la-tru-6"\n' +
         '"dsfjhiueorpwtjkghiuopfjaklsgdhioutpwjerklghsdfi", "Undefined"'
+    );
+  });
+
+  test('getUsersStats', async () => {
+    const res = await getUsersStats();
+
+    expect(res).toEqual(
+      expect.objectContaining({
+        rawData: parsedConfig.peers,
+        stats: {
+          totalUsers: 4,
+          totalUniqueUsers: 2,
+          usersWithOneKey: 1,
+          usersWithTwoKeys: 0,
+          usersWithThreeKeys: 1,
+          usersWithFourAndMoreKeys: 0
+        }
+      })
     );
   });
 });

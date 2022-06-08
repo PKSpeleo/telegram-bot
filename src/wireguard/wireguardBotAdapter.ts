@@ -4,7 +4,7 @@ import {
   createBackup,
   GetConfigFile,
   getKeyFilePathsForUserId,
-  getKeyUserPairs
+  getKeyUserPairs, getUsersStats, UsersStats
 } from './wireguard';
 import { BotContext, BotProperties } from '../bot/shared/interfaces';
 import { PeerDataConfig } from './wireguardConfigUtils';
@@ -57,5 +57,12 @@ export class WireguardBotAdapter {
       return getKeyUserPairs();
     }
     return this.queue.enqueue(createGetKeyUserPairsFileFunction);
+  }
+
+  public async getUsersStats(): Promise<UsersStats> {
+    function createGetUsersStatsFunction() {
+      return getUsersStats();
+    }
+    return this.queue.enqueue(createGetUsersStatsFunction);
   }
 }

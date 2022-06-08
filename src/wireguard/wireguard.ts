@@ -32,6 +32,19 @@ export interface GetConfigFile {
   };
 }
 
+export interface UsersStats {
+  rawData: PeerConfig[];
+  usersMap: Map<string, PeerConfig[]>;
+  stats: {
+    totalUsers: number;
+    totalUniqueUsers: number;
+    usersWithOneKey: number;
+    usersWithTwoKeys: number;
+    usersWithThreeKeys: number;
+    usersWithFourAndMoreKeys: number;
+  };
+}
+
 const WG_PATH = '/etc/wireguard';
 const WG_USERS_PATH = 'users';
 const WG_BACKUP_PATH = 'backup';
@@ -257,7 +270,7 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
     let name = '';
 
     if (peer.data?.userName) {
-      name = (peer.data.userName).trim();
+      name = peer.data.userName.trim();
     }
 
     if (peer.data?.firstName) {
@@ -286,5 +299,58 @@ export async function getKeyUserPairs(): Promise<GetConfigFile> {
     fileName: WG_KEY_USER_PAIRS_FAIL_NAME,
     filePath: keyUserPairsFilePath,
     content: ''
+  };
+}
+
+export async function getUsersStats(): Promise<UsersStats> {
+  const config = await getConfig();
+  const usersMap = new Map<string, PeerConfig[]>();
+  const rawData = config.peers;
+  const totalUsers = rawData.length;
+  let usersWithOneKey = 0;
+  let usersWithTwoKeys = 0;
+  let usersWithThreeKeys = 0;
+  let usersWithFourAndMoreKeys = 0;
+
+  rawData.forEach((peer) => {
+    const userId = peer.data?.userId || 'Unknown';
+    if (usersMap.has(userId)) {
+      const usersPeers = usersMap.get(userId) || [];
+      usersPeers.push(peer);
+      usersMap.set(userId, usersPeers);
+    } else {
+      usersMap.set(userId, [peer]);
+    }
+  });
+
+  const totalUniqueUsers = usersMap.size;
+  usersMap.forEach((peers, userId) => {
+    switch (peers.length) {
+      case 1:
+        usersWithOneKey++;
+        break;
+      case 2:
+        usersWithTwoKeys++;
+        break;
+      case 3:
+        usersWithThreeKeys++;
+        break;
+      default:
+        usersWithFourAndMoreKeys++;
+        break;
+    }
+  });
+
+  return {
+    rawData,
+    usersMap,
+    stats: {
+      totalUsers,
+      totalUniqueUsers,
+      usersWithOneKey,
+      usersWithTwoKeys,
+      usersWithThreeKeys,
+      usersWithFourAndMoreKeys
+    }
   };
 }

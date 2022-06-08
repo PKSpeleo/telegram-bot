@@ -13,6 +13,7 @@ import { getBackup } from './commands/getBackup';
 import { addClient } from './commands/addClient';
 import { getMyKeys } from './commands/getMyKeys';
 import { getKeyUserPairs } from './commands/getKeyUserPairs';
+import { getUsersStats } from './commands/getUsersStats';
 
 export async function startBot(botProperties: BotProperties, logger: Logger) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
@@ -53,10 +54,16 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     getBackup(ctx, botProperties, logger);
   });
 
-  bot.command('gerkeyuserpairs', async (ctx) => {
+  bot.command('getkeyuserpairs', async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     getKeyUserPairs(ctx, botProperties, logger);
+  });
+
+  bot.command('getusersstats', async (ctx) => {
+    logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
+    getUsersStats(ctx, botProperties, logger);
   });
 
   bot.command('addclient', async (ctx) => {

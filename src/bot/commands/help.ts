@@ -15,6 +15,7 @@ Send /getmykeys to get My keys
 Send /getbackup to get Backup
 Send /getkeyuserpairs to get Statistic
 Send /getusersstats to get Statistic
+Send /deleteleftusers to delete users not in the groups
 `,
       { reply_to_message_id: ctx.message.message_id }
     );

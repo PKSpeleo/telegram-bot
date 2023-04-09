@@ -14,6 +14,7 @@ import { addClient } from './commands/addClient';
 import { getMyKeys } from './commands/getMyKeys';
 import { getKeyUserPairs } from './commands/getKeyUserPairs';
 import { getUsersStats } from './commands/getUsersStats';
+import { deleteLeftUsers } from './commands/deleteLeftUsers';
 
 export async function startBot(botProperties: BotProperties, logger: Logger) {
   const bot: Telegraf<Context<Update>> = new Telegraf(botProperties.TOKEN);
@@ -64,6 +65,12 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
     getUsersStats(ctx, botProperties, logger);
+  });
+
+  bot.command('deleteleftusers', async (ctx) => {
+    logDebugInfoToConsole(ctx, botProperties);
+    logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
+    deleteLeftUsers(ctx, botProperties, logger);
   });
 
   bot.command('addclient', async (ctx) => {

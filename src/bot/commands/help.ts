@@ -9,11 +9,11 @@ export async function reactOnHelpCommand(ctx: BotContext, botProperties: BotProp
       `Send /start to receive a greeting
 Send /help to help
 Send /info to get some info
-Send /addClient to add Client
-Send /getMyKeys to get My keys
-Send /getBackup to get Backup
-Send /getKeyUserPairs to get Statistic
-Send /getUsersStats to get Statistic
+Send /addclient to add Client
+Send /getmykeys to get My keys
+Send /getbackup to get Backup
+Send /getkeyuserpairs to get Statistic
+Send /getusersstats to get Statistic
 `,
       { reply_to_message_id: ctx.message.message_id }
     );

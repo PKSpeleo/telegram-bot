@@ -241,9 +241,9 @@ export async function deleteClients(clientsForDelete: string[], serverName: stri
 
   wgConfigObject.peers = wgConfigObject.peers.filter((peer) => {
     if (peer.data?.userId) {
-      return clientsForDelete.includes(peer.data.userId);
+      return !clientsForDelete.includes(peer.data.userId);
     } else {
-      return false;
+      return true;
     }
   });
 

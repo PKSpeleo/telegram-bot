@@ -73,6 +73,11 @@ Now you can access server by `ssh vps_server`
 brew install wireguard-tools
 ```
 
+- Add GitHub tools to manage secrets ;)
+```shell
+brew install gh
+```
+
 ### Prepare VPS
 - Copy PUB Rsa key to the Server
 ```shell

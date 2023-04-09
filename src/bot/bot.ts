@@ -33,7 +33,7 @@ export async function startBot(botProperties: BotProperties, logger: Logger) {
   bot.help(async (ctx) => {
     logDebugInfoToConsole(ctx, botProperties);
     logger.writeToLogFile(await stringifyDebugDate(ctx, botProperties));
-    reactOnHelpCommand(ctx);
+    reactOnHelpCommand(ctx, botProperties);
   });
 
   bot.command('info', async (ctx) => {

@@ -4,7 +4,10 @@ import {
   createBackup,
   GetConfigFile,
   getKeyFilePathsForUserId,
-  getKeyUserPairs, getUsersStats, UsersStats
+  getKeyUserPairs,
+  getUsersStats,
+  UsersStats,
+  deleteClients
 } from './wireguard';
 import { BotContext, BotProperties } from '../bot/shared/interfaces';
 import { PeerDataConfig } from './wireguardConfigUtils';
@@ -50,6 +53,16 @@ export class WireguardBotAdapter {
       );
     }
     return this.queue.enqueue(createAddClientFunction);
+  }
+
+  public async deleteClients(
+    botProperties: BotProperties,
+    clientsForDelete: string[]
+  ): Promise<void> {
+    function createDeleteClientsFunction() {
+      return deleteClients(clientsForDelete, botProperties.NAME);
+    }
+    return this.queue.enqueue(createDeleteClientsFunction);
   }
 
   public async getKeyUserPairsFile(): Promise<GetConfigFile> {

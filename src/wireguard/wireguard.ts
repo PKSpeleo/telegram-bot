@@ -236,6 +236,24 @@ export async function addClient(
   };
 }
 
+export async function deleteClients(clientsForDelete: string[], serverName: string): Promise<void> {
+  const wgConfigObject = await getConfig();
+
+  wgConfigObject.peers = wgConfigObject.peers.filter((peer) => {
+    if (peer.data?.userId) {
+      return clientsForDelete.includes(peer.data.userId);
+    } else {
+      return false;
+    }
+  });
+
+  await writeConfig(wgConfigObject);
+
+  await syncConfig();
+
+  await createBackup(serverName);
+}
+
 //TODO not cowered by tests. Solve this problem (mock cmd?)
 export async function createBackup(serverName: string): Promise<GetConfigFile> {
   const backupPath = path.join(WG_PATH, WG_BACKUP_PATH);

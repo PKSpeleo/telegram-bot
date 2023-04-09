@@ -9,6 +9,7 @@ export async function reactOnHelpCommand(ctx: BotContext, botProperties: BotProp
       `Send /start to receive a greeting
 Send /help to help
 Send /info to get some info
+Send /log to get Log
 Send /addclient to add Client
 Send /getmykeys to get My keys
 Send /getbackup to get Backup

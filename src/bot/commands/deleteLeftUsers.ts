@@ -32,7 +32,7 @@ export async function deleteLeftUsers(ctx: BotContext, botProperties: BotPropert
 
       await ctx
         .reply(
-          `Users to be deleted: ${telegramUsersFromChat}`,
+          `Users to be deleted: ${telegramUsersNotInChat}`,
           {
             reply_to_message_id: ctx.message.message_id
           }

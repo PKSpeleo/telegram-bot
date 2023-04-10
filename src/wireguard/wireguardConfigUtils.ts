@@ -1,4 +1,4 @@
-import { getConfig } from './wireguard';
+import { IPv4, IPv6 } from 'ip-num';
 
 interface DynamicObject {
   [key: string]: string | undefined;
@@ -289,7 +289,7 @@ export function serializeClientConfig(config: ClientConfig): string {
     serializedDNS = serializedDNS + `DNS = ${address}\n`;
   });
 
-  const serializedKeepAlive = `PersistentKeepalive = ${config.peer.PersistentKeepalive}\n`
+  const serializedKeepAlive = `PersistentKeepalive = ${config.peer.PersistentKeepalive}\n`;
 
   const output =
     serializedInterface +
@@ -306,92 +306,74 @@ export function serializeClientConfig(config: ClientConfig): string {
   return output;
 }
 
-//TODO v6 without v4 not supported. De we need v6 separately?
-export function extractIpBases(ipString: string): IPBases {
-  const ipArray = ipString.split(',');
-  let serverIpV4;
-  let serverIpV6;
+export function extractIpsFromAddressString(addressString: string): { ipV4: string; ipV6: string } {
+  let ipV4 = '';
+  let ipV6 = '';
+  const ipArray = addressString.split(',');
   switch (ipArray.length) {
     case 1:
       if (ipArray[0].includes(':')) {
-        serverIpV6 = ipArray[0];
+        ipV6 = ipArray[0];
       } else {
-        serverIpV4 = ipArray[0];
+        ipV4 = ipArray[0];
       }
       break;
     case 2:
       if (ipArray[0].includes(':')) {
-        serverIpV6 = ipArray[0];
-        serverIpV4 = ipArray[1];
+        ipV6 = ipArray[0];
+        ipV4 = ipArray[1];
       } else {
-        serverIpV4 = ipArray[0];
-        serverIpV6 = ipArray[1];
+        ipV4 = ipArray[0];
+        ipV6 = ipArray[1];
       }
       break;
     default:
       throw new Error('No IPs found or too many!');
   }
-
-  const baseIpV4 = serverIpV4?.slice(0, serverIpV4.lastIndexOf('.') + 1);
-  const baseIpV6 = serverIpV6?.slice(0, serverIpV6.lastIndexOf(':') + 1);
-
-  if (!baseIpV4) {
-    throw new Error('No ipV4 found');
-  }
-
-  const returnValue: IPBases = {
-    v4: baseIpV4
+  return {
+    ipV4: ipV4.slice(0, ipV4.lastIndexOf('/')),
+    ipV6: ipV6.slice(0, ipV6.lastIndexOf('/'))
   };
-  if (baseIpV6) {
-    returnValue.v6 = baseIpV6;
-  }
-
-  return returnValue;
 }
 
-export function findFirstFreeAddress(peers: PeerConfig[]): string {
-  const arrayOfAddresses = peers.map((peer) => {
-    const addressString = peer.config.AllowedIPs;
-    const ipArray = addressString.split(',');
-    let serverIpV4;
-    let serverIpV6;
-    switch (ipArray.length) {
-      case 1:
-        if (ipArray[0].includes(':')) {
-          serverIpV6 = ipArray[0];
-        } else {
-          serverIpV4 = ipArray[0];
-        }
-        break;
-      case 2:
-        if (ipArray[0].includes(':')) {
-          serverIpV6 = ipArray[0];
-          serverIpV4 = ipArray[1];
-        } else {
-          serverIpV4 = ipArray[0];
-          serverIpV6 = ipArray[1];
-        }
-        break;
-      default:
-        throw new Error('No IPs found or too many!');
-    }
-    const endingOfIpV4 = serverIpV4?.slice(
-      serverIpV4.lastIndexOf('.') + 1,
-      serverIpV4.lastIndexOf('/')
-    );
-    return Number(endingOfIpV4);
+export function findFirstIPAddresses(wgConfig: WireguardConfig): {
+  ipV4: string;
+  ipV6: string;
+} {
+  const startIps = extractIpsFromAddressString(wgConfig.interface.config.Address);
+  let currentIpV4 = new IPv4(startIps.ipV4).nextIPNumber();
+  let currentIpV6 = new IPv6(startIps.ipV6).nextIPNumber();
+  let isFirstFreeIpV4Found = false;
+  let isFirstFreeIpV6Found = false;
+  const arrayOfExistingV4Ips: string[] = [];
+  const arrayOfExistingV6Ips: string[] = [];
+  wgConfig.peers.forEach((peer) => {
+    const peerIps = extractIpsFromAddressString(peer.config.AllowedIPs);
+    arrayOfExistingV4Ips.push(new IPv4(peerIps.ipV4).toString());
+    arrayOfExistingV6Ips.push(new IPv6(peerIps.ipV6).toString());
   });
-  let freeIpNumber;
-  for (let i = 2; i < 255; i++) {
-    if (!arrayOfAddresses.includes(i)) {
-      freeIpNumber = i;
-      break;
+  arrayOfExistingV4Ips.forEach((ip) => {
+    if (!isFirstFreeIpV4Found && arrayOfExistingV4Ips.includes(currentIpV4.toString())) {
+      currentIpV4 = currentIpV4.nextIPNumber();
+    } else {
+      isFirstFreeIpV4Found = true;
+      return;
     }
-  }
-  if (!freeIpNumber) {
-    throw new Error('Maximum number of clients reached.');
-  }
-  return freeIpNumber.toString();
+  });
+
+  arrayOfExistingV6Ips.forEach((ip) => {
+    if (!isFirstFreeIpV6Found && arrayOfExistingV6Ips.includes(currentIpV6.toString())) {
+      currentIpV6 = currentIpV6.nextIPNumber();
+    } else {
+      isFirstFreeIpV6Found = true;
+      return;
+    }
+  });
+  const returnValue = {
+    ipV4: currentIpV4.toString(),
+    ipV6: currentIpV6.toString()
+  };
+  return returnValue;
 }
 
 export function countSameUsersIds(peers: PeerConfig[], userId: number): number {

@@ -3148,6 +3148,11 @@ internal-slot@^1.0.3:
     has "^1.0.3"
     side-channel "^1.0.4"
 
+ip-num@^1.5.1:
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/ip-num/-/ip-num-1.5.1.tgz#a6b798f616fa51b7c80f42c6de26389abd3f0faf"
+  integrity sha512-QziFxgxq3mjIf5CuwlzXFYscHxgLqdEdJKRo2UJ5GurL5zrSRMzT/O+nK0ABimoFH8MWF8YwIiwECYsHc1LpUQ==
+
 is-arguments@^1.0.4:
   version "1.1.1"
   resolved "https://registry.npmjs.org/is-arguments/-/is-arguments-1.1.1.tgz"

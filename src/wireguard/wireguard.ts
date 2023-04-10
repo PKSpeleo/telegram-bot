@@ -2,8 +2,7 @@ import { execChildProcess } from '../utils/cmd';
 import {
   ClientConfig,
   countSameUsersIds,
-  extractIpBases,
-  findFirstFreeAddress,
+  findFirstIPAddresses,
   getKeyFilesForUserId,
   parseWireguardConfig,
   PeerConfig,
@@ -177,9 +176,8 @@ export async function addClient(
   const serverPubKey = await generatePubKey(serverPrivateKey);
   const currentDateString = dayjs().format(DATE_FORMAT);
   const serverAddress = serverIp + ':' + wgConfigObject.interface.config.ListenPort;
-  const freeIp = findFirstFreeAddress(wgConfigObject.peers);
-  const baseIp = extractIpBases(wgConfigObject.interface.config.Address);
-  const addressString = baseIp.v4 + freeIp + '/32' + ',' + baseIp.v6 + freeIp + '/128';
+  const freeIps = findFirstIPAddresses(wgConfigObject);
+  const addressString = freeIps.ipV4 + '/32' + ',' + freeIps.ipV6 + '/128';
 
   const dataForClientConfigUpdate: ClientConfig = {
     interface: {

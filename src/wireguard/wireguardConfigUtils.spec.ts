@@ -2,8 +2,8 @@ import {
   ClientConfig,
   countSameUsersIds,
   extractConfigAndAdditionalInformation,
-  extractIpBases,
-  findFirstFreeAddress,
+  extractIpsFromAddressString,
+  findFirstIPAddresses,
   getKeyFilesForUserId,
   parseTypicalConfig,
   parseWireguardConfig,
@@ -93,46 +93,39 @@ describe('wireguardConfigUtils', () => {
     });
   });
 
-  describe('extractIpBases', () => {
-    test('should extract v4 and v6 bases', () => {
-      const result = extractIpBases('10.66.66.1/24,fd42:42:42::1/64');
-      expect(result).toEqual({ v4: '10.66.66.', v6: 'fd42:42:42::' });
+  describe('extractIpsFromAddressString', () => {
+    test('should extract correct ips', () => {
+      const result = extractIpsFromAddressString('10.66.66.2/32,fd42:42:42::2/128');
+      expect(result).toEqual({
+        ipV4: '10.66.66.2',
+        ipV6: 'fd42:42:42::2'
+      });
     });
 
-    test('should extract v6 and v4 bases', () => {
-      const result = extractIpBases('fd42:42:42::1/64,10.66.66.1/24');
-      expect(result).toEqual({ v4: '10.66.66.', v6: 'fd42:42:42::' });
-    });
-
-    test('should extract v4 only', () => {
-      const result = extractIpBases('10.66.66.1/24');
-      expect(result).toEqual({ v4: '10.66.66.' });
-    });
-
-    test('should NOT extract v6 only', () => {
-      const func = () => {
-        extractIpBases('fd42:42:42::1/64');
-      };
-      expect(func).toThrowError('No ipV4 found');
-    });
-
-    test('should throw an error if to many ips', () => {
-      const func = () => {
-        extractIpBases('10.66.66.1/24,fd42:42:42::1/64,10.66.66.1/24,fd42:42:42::1/64');
-      };
-      expect(func).toThrowError('No IPs found or too many!');
+    test('should extract correct ips from reverse', () => {
+      const result = extractIpsFromAddressString('fd42:42:42::fff/128,10.66.62.250/32');
+      expect(result).toEqual({
+        ipV4: '10.66.62.250',
+        ipV6: 'fd42:42:42::fff'
+      });
     });
   });
 
-  describe('findFirstFreeAddress', () => {
+  describe('findFirstFreeAddresses', () => {
     test('should find last free ip', () => {
-      const result = findFirstFreeAddress(parsedConfig.peers);
-      expect(result).toEqual('6');
+      const result = findFirstIPAddresses(parsedConfig);
+      expect(result).toEqual({
+        ipV4: '10.66.66.6',
+        ipV6: 'fd42:42:42:0:0:0:0:6'
+      });
     });
 
     test('should find free ip in the middle', () => {
-      const result = findFirstFreeAddress(parsedConfigWithoutThird.peers);
-      expect(result).toEqual('3');
+      const result = findFirstIPAddresses(parsedConfigWithoutThird);
+      expect(result).toEqual({
+        ipV4: '10.66.66.3',
+        ipV6: 'fd42:42:42:0:0:0:0:3'
+      });
     });
   });
 
@@ -583,7 +576,7 @@ export const parsedClientConfig: ClientConfig = {
     type: `[Interface]`,
     PrivateKey: `aiupououyuiyiuyom,nm,nbkjjkhgklg`,
     Address: `10.66.66.24/32,fd42:42:42::24/128`,
-    DNS: ['1.1.1.1','8.8.8.8']
+    DNS: ['1.1.1.1', '8.8.8.8']
   },
   peer: {
     type: `[Peer]`,
